@@ -8,6 +8,8 @@ import {
     signInWithGoogle,
     resetPassword,
 } from "@/lib/auth";
+import ThemeToggle from "./ThemeToggle";
+import PasswordInput from "./PasswordInput";
 
 type AuthMode = "login" | "signup" | "reset";
 
@@ -95,7 +97,12 @@ export default function AuthPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex">
+        <div className="min-h-screen bg-[var(--background)] flex relative">
+            {/* Theme Toggle */}
+            <div className="absolute top-4 right-4 z-50">
+                <ThemeToggle />
+            </div>
+
             {/* Left Side - Branding */}
             <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-600 relative overflow-hidden">
                 {/* Decorative elements */}
@@ -254,14 +261,11 @@ export default function AuthPage() {
                                 <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
                                     Senha
                                 </label>
-                                <input
-                                    type="password"
+                                <PasswordInput
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    placeholder="••••••••"
                                     required
                                     minLength={6}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
                                 />
                             </div>
                         )}
@@ -271,14 +275,12 @@ export default function AuthPage() {
                                 <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
                                     Confirmar Senha
                                 </label>
-                                <input
-                                    type="password"
+                                <PasswordInput
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="••••••••"
+                                    placeholder="Confirme sua senha"
                                     required
                                     minLength={6}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
                                 />
                             </div>
                         )}

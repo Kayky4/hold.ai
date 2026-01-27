@@ -6,12 +6,14 @@ import { ProjectContext } from "@/types/project";
 import { Meeting } from "@/lib/meetings";
 import ConfirmModal from "./ConfirmModal";
 import ProjectSwitcher from "./ProjectSwitcher";
+import EditProfileModal from "./EditProfileModal";
 import { useAuth } from "@/contexts/AuthContext";
 
 // User Menu Component
 function UserMenu() {
     const { user, profile, signOut } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
     if (!user) return null;
 
@@ -19,65 +21,92 @@ function UserMenu() {
     const initial = displayName.charAt(0).toUpperCase();
 
     return (
-        <div className="relative">
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-[var(--background)] transition-colors"
-            >
-                {user.photoURL ? (
-                    <img
-                        src={user.photoURL}
-                        alt={displayName}
-                        className="w-9 h-9 rounded-lg object-cover"
-                    />
-                ) : (
-                    <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
-                        <span className="text-white font-medium text-sm">{initial}</span>
-                    </div>
-                )}
-                <div className="flex-1 text-left">
-                    <p className="text-sm font-medium text-[var(--foreground)] truncate">
-                        {displayName}
-                    </p>
-                    <p className="text-xs text-[var(--muted)] truncate">
-                        {user.email}
-                    </p>
-                </div>
-                <svg
-                    className={`w-4 h-4 text-[var(--muted)] transition-transform ${isOpen ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+        <>
+            <div className="relative">
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-[var(--background)] transition-colors"
                 >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-            </button>
-
-            {isOpen && (
-                <>
-                    <div
-                        className="fixed inset-0 z-10"
-                        onClick={() => setIsOpen(false)}
-                    />
-                    <div className="absolute bottom-full left-0 right-0 mb-1 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg p-1 z-20">
-                        <button
-                            onClick={async () => {
-                                setIsOpen(false);
-                                await signOut();
-                            }}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                        >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                            Sair
-                        </button>
+                    {user.photoURL ? (
+                        <img
+                            src={user.photoURL}
+                            alt={displayName}
+                            className="w-9 h-9 rounded-lg object-cover"
+                        />
+                    ) : (
+                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center">
+                            <span className="text-white font-medium text-sm">{initial}</span>
+                        </div>
+                    )}
+                    <div className="flex-1 text-left">
+                        <p className="text-sm font-medium text-[var(--foreground)] truncate">
+                            {displayName}
+                        </p>
+                        <p className="text-xs text-[var(--muted)] truncate">
+                            {user.email}
+                        </p>
                     </div>
-                </>
-            )}
-        </div>
+                    <svg
+                        className={`w-4 h-4 text-[var(--muted)] transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                {isOpen && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-10"
+                            onClick={() => setIsOpen(false)}
+                        />
+                        <div className="absolute bottom-full left-0 right-0 mb-1 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-lg p-1 z-20 animate-scale-in">
+                            {/* Edit Profile */}
+                            <button
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    setIsEditProfileOpen(true);
+                                }}
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Editar Perfil
+                            </button>
+
+                            {/* Divider */}
+                            <div className="h-px bg-[var(--border)] my-1" />
+
+                            {/* Sign Out */}
+                            <button
+                                onClick={async () => {
+                                    setIsOpen(false);
+                                    await signOut();
+                                }}
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                </svg>
+                                Sair
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+
+            {/* Edit Profile Modal */}
+            <EditProfileModal
+                isOpen={isEditProfileOpen}
+                onClose={() => setIsEditProfileOpen(false)}
+            />
+        </>
     );
 }
+
 
 interface SidebarProps {
     conversations: Conversation[];

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { completeUserProfile } from "@/lib/auth";
 import { useAuth } from "@/contexts/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 export default function CompleteProfile() {
     const { user, profile, refreshProfile } = useAuth();
@@ -68,7 +69,12 @@ export default function CompleteProfile() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+            {/* Theme Toggle */}
+            <div className="absolute top-4 right-4">
+                <ThemeToggle />
+            </div>
+
             <div className="w-full max-w-lg">
                 {/* Header */}
                 <div className="text-center mb-8">
@@ -147,8 +153,8 @@ export default function CompleteProfile() {
                                         type="button"
                                         onClick={() => setRole(r.value)}
                                         className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${role === r.value
-                                                ? "bg-[var(--primary)] text-white"
-                                                : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                            ? "bg-[var(--primary)] text-white"
+                                            : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
                                             }`}
                                     >
                                         {r.label}
@@ -169,8 +175,8 @@ export default function CompleteProfile() {
                                         type="button"
                                         onClick={() => setProjectType(t.value)}
                                         className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${projectType === t.value
-                                                ? "bg-[var(--primary)] text-white"
-                                                : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                            ? "bg-[var(--primary)] text-white"
+                                            : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
                                             }`}
                                     >
                                         {t.label}

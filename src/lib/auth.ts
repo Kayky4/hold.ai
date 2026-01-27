@@ -8,6 +8,10 @@ import {
     UserCredential,
     updateProfile,
     sendPasswordResetEmail,
+    linkWithCredential,
+    linkWithPopup,
+    EmailAuthProvider,
+    fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import {
     doc,
@@ -223,6 +227,27 @@ export async function completeOnboarding(uid: string): Promise<void> {
     });
 }
 
+// Update user profile
+export async function updateUserProfile(
+    uid: string,
+    data: {
+        displayName?: string;
+        company?: string;
+        role?: string;
+        projectType?: string;
+    }
+): Promise<UserProfile> {
+    const userRef = doc(db, USERS_COLLECTION, uid);
+
+    await updateDoc(userRef, {
+        ...data,
+        updatedAt: serverTimestamp(),
+    });
+
+    const profile = await getUserProfile(uid);
+    return profile!;
+}
+
 // Send password reset email
 export async function resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(auth, email);
@@ -241,4 +266,76 @@ export function onAuthChange(callback: (user: User | null) => void): () => void 
 // Get current user
 export function getCurrentUser(): User | null {
     return auth.currentUser;
+}
+
+// Get linked providers for current user
+export function getLinkedProviders(user: User): string[] {
+    return user.providerData.map((provider) => provider.providerId);
+}
+
+// Check if user has password authentication
+export function hasPasswordAuth(user: User): boolean {
+    return getLinkedProviders(user).includes("password");
+}
+
+// Check if user has Google authentication
+export function hasGoogleAuth(user: User): boolean {
+    return getLinkedProviders(user).includes("google.com");
+}
+
+// Link password to existing account (for Google users who want to add email/password)
+export async function linkPasswordToAccount(
+    user: User,
+    password: string
+): Promise<void> {
+    if (!user.email) {
+        throw new Error("Usuário não possui email associado");
+    }
+
+    if (hasPasswordAuth(user)) {
+        throw new Error("Conta já possui uma senha cadastrada");
+    }
+
+    const credential = EmailAuthProvider.credential(user.email, password);
+    await linkWithCredential(user, credential);
+}
+
+// Link Google to existing account (for email/password users who want to add Google)
+export async function linkGoogleToAccount(user: User): Promise<void> {
+    if (hasGoogleAuth(user)) {
+        throw new Error("Conta já está vinculada ao Google");
+    }
+
+    await linkWithPopup(user, googleProvider);
+}
+
+// Check sign-in methods for an email (to detect conflicts during signup)
+export async function getSignInMethodsForEmail(email: string): Promise<string[]> {
+    try {
+        return await fetchSignInMethodsForEmail(auth, email);
+    } catch {
+        return [];
+    }
+}
+
+// Check if email is already registered
+export async function isEmailRegistered(email: string): Promise<boolean> {
+    const methods = await getSignInMethodsForEmail(email);
+    return methods.length > 0;
+}
+
+// Get human-readable provider name
+export function getProviderDisplayName(providerId: string): string {
+    switch (providerId) {
+        case "google.com":
+            return "Google";
+        case "password":
+            return "Email e Senha";
+        case "facebook.com":
+            return "Facebook";
+        case "twitter.com":
+            return "Twitter";
+        default:
+            return providerId;
+    }
 }

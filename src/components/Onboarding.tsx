@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { completeOnboarding } from "@/lib/auth";
 import { useAuth } from "@/contexts/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 interface OnboardingStep {
     id: string;
@@ -131,7 +132,12 @@ export default function Onboarding() {
     const isLastStep = currentStep === steps.length - 1;
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
+        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+            {/* Theme Toggle */}
+            <div className="absolute top-4 right-4 z-50">
+                <ThemeToggle />
+            </div>
+
             <div className="w-full max-w-2xl">
                 {/* Progress */}
                 <div className="flex items-center justify-between mb-8">
@@ -140,8 +146,8 @@ export default function Onboarding() {
                             <div
                                 key={index}
                                 className={`h-1.5 rounded-full transition-all ${index <= currentStep
-                                        ? "w-8 bg-gradient-to-r from-violet-600 to-purple-600"
-                                        : "w-4 bg-[var(--border)]"
+                                    ? "w-8 bg-gradient-to-r from-violet-600 to-purple-600"
+                                    : "w-4 bg-[var(--border)]"
                                     }`}
                             />
                         ))}
