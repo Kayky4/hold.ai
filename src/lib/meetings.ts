@@ -8,6 +8,7 @@ import {
     deleteDoc,
     query,
     orderBy,
+    where,
     Timestamp,
     serverTimestamp,
 } from "firebase/firestore";
@@ -23,6 +24,7 @@ export interface MeetingMessage {
 
 export interface Meeting {
     id: string;
+    userId: string;
     title: string;
     persona1Name: string;
     persona2Name: string;
@@ -35,10 +37,11 @@ export interface Meeting {
 
 const COLLECTION_NAME = "meetings";
 
-// Get all meetings
-export async function getMeetings(): Promise<Meeting[]> {
+// Get all meetings for a user
+export async function getMeetings(userId: string): Promise<Meeting[]> {
     const q = query(
         collection(db, COLLECTION_NAME),
+        where("userId", "==", userId),
         orderBy("updatedAt", "desc")
     );
     const snapshot = await getDocs(q);
@@ -78,50 +81,67 @@ export async function getMeeting(id: string): Promise<Meeting | null> {
 
 // Create a new meeting
 export async function createMeeting(
-    persona1Name: string,
-    persona2Name: string,
-    topic: string
+    userId: string,
+    data: {
+        title: string;
+        persona1Name: string;
+        persona2Name: string;
+        topic: string;
+        messages: MeetingMessage[];
+        rounds: number;
+    }
 ): Promise<string> {
+    // Convert Date to Timestamp for storage
+    const messagesForStorage = data.messages.map((m) => ({
+        ...m,
+        timestamp: Timestamp.fromDate(m.timestamp),
+    }));
+
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
-        title: `${persona1Name} vs ${persona2Name}`,
-        persona1Name,
-        persona2Name,
-        topic,
-        messages: [],
-        rounds: 0,
+        userId,
+        title: data.title,
+        persona1Name: data.persona1Name,
+        persona2Name: data.persona2Name,
+        topic: data.topic,
+        messages: messagesForStorage,
+        rounds: data.rounds,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
     return docRef.id;
 }
 
-// Update meeting messages
-export async function updateMeetingMessages(
+// Update a meeting
+export async function updateMeeting(
     id: string,
-    messages: MeetingMessage[],
-    rounds: number
+    data: Partial<{
+        title: string;
+        messages: MeetingMessage[];
+        rounds: number;
+    }>
 ): Promise<void> {
     const docRef = doc(db, COLLECTION_NAME, id);
-    await updateDoc(docRef, {
-        messages: messages.map(m => ({
-            ...m,
-            timestamp: m.timestamp instanceof Date ? Timestamp.fromDate(m.timestamp) : m.timestamp,
-        })),
-        rounds,
-        updatedAt: serverTimestamp(),
-    });
-}
 
-// Update meeting title
-export async function updateMeetingTitle(
-    id: string,
-    title: string
-): Promise<void> {
-    const docRef = doc(db, COLLECTION_NAME, id);
-    await updateDoc(docRef, {
-        title,
+    const updateData: Record<string, unknown> = {
         updatedAt: serverTimestamp(),
-    });
+    };
+
+    if (data.title !== undefined) {
+        updateData.title = data.title;
+    }
+
+    if (data.rounds !== undefined) {
+        updateData.rounds = data.rounds;
+    }
+
+    if (data.messages !== undefined) {
+        updateData.messages = data.messages.map((m) => ({
+            ...m,
+            timestamp: Timestamp.fromDate(m.timestamp),
+        }));
+    }
+
+    await updateDoc(docRef, updateData);
 }
 
 // Delete a meeting
@@ -129,8 +149,22 @@ export async function deleteMeeting(id: string): Promise<void> {
     await deleteDoc(doc(db, COLLECTION_NAME, id));
 }
 
-// Generate a title from the topic
-export function generateMeetingTitle(topic: string, persona1: string, persona2: string): string {
-    const shortTopic = topic.length > 30 ? topic.substring(0, 30) + "..." : topic;
-    return `${shortTopic} • ${persona1} vs ${persona2}`;
+// Get meeting count for a user
+export async function getMeetingCount(userId: string): Promise<number> {
+    const q = query(
+        collection(db, COLLECTION_NAME),
+        where("userId", "==", userId)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.size;
 }
+
+// Update meeting messages (alias for updateMeeting with just messages)
+export async function updateMeetingMessages(
+    id: string,
+    messages: MeetingMessage[],
+    rounds?: number
+): Promise<void> {
+    await updateMeeting(id, { messages, rounds });
+}
+

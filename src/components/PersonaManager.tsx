@@ -5,6 +5,7 @@ import { Persona } from "@/types";
 import { getPersonas, createPersona, updatePersona, deletePersona } from "@/lib/personas";
 import PersonaForm from "./PersonaForm";
 import ConfirmModal from "./ConfirmModal";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface PersonaManagerProps {
     selectedPersonaId: string | null;
@@ -17,6 +18,8 @@ export default function PersonaManager({
     onSelectPersona,
     onClose,
 }: PersonaManagerProps) {
+    const { user } = useAuth();
+    const userId = user?.uid || "";
     const [personas, setPersonas] = useState<Persona[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
@@ -26,13 +29,16 @@ export default function PersonaManager({
     const [personaToDelete, setPersonaToDelete] = useState<Persona | null>(null);
 
     useEffect(() => {
-        loadPersonas();
-    }, []);
+        if (userId) {
+            loadPersonas();
+        }
+    }, [userId]);
 
     const loadPersonas = async () => {
+        if (!userId) return;
         setIsLoading(true);
         try {
-            const data = await getPersonas();
+            const data = await getPersonas(userId);
             setPersonas(data);
         } catch (error) {
             console.error("Error loading personas:", error);
@@ -42,9 +48,10 @@ export default function PersonaManager({
     };
 
     const handleCreatePersona = async (personaData: Omit<Persona, "id">) => {
+        if (!userId) return;
         setIsSaving(true);
         try {
-            const id = await createPersona(personaData);
+            const id = await createPersona(userId, personaData);
             await loadPersonas();
             setShowForm(false);
             // Auto-select the new persona
@@ -193,15 +200,15 @@ export default function PersonaManager({
                                             key={persona.id}
                                             onClick={() => handleSelectPersona(persona)}
                                             className={`group p-4 rounded-xl cursor-pointer transition-all duration-200 border ${selectedPersonaId === persona.id
-                                                    ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
-                                                    : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
+                                                ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
+                                                : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
                                                 }`}
                                         >
                                             <div className="flex items-start justify-between">
                                                 <div className="flex items-start gap-3">
                                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${selectedPersonaId === persona.id
-                                                            ? "bg-[var(--primary)]"
-                                                            : "bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)]"
+                                                        ? "bg-[var(--primary)]"
+                                                        : "bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)]"
                                                         }`}>
                                                         <span className="text-white font-bold text-sm">
                                                             {persona.name.charAt(0).toUpperCase()}
@@ -210,8 +217,8 @@ export default function PersonaManager({
                                                     <div>
                                                         <div className="flex items-center gap-2">
                                                             <h3 className={`font-medium ${selectedPersonaId === persona.id
-                                                                    ? "text-[var(--primary)]"
-                                                                    : "text-[var(--foreground)]"
+                                                                ? "text-[var(--primary)]"
+                                                                : "text-[var(--foreground)]"
                                                                 }`}>
                                                                 {persona.name}
                                                             </h3>

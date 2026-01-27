@@ -9,21 +9,27 @@ import {
 } from "@/types/project";
 import {
     getActiveProject,
+    getProject,
     createProject,
     updateProject,
 } from "@/lib/projects";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface ProjectContextEditorProps {
     isOpen: boolean;
     onClose: () => void;
     onSave?: (project: ProjectContext) => void;
+    projectId?: string; // Optional: edit specific project instead of active one
 }
 
 export default function ProjectContextEditor({
     isOpen,
     onClose,
     onSave,
+    projectId: editProjectId,
 }: ProjectContextEditorProps) {
+    const { user } = useAuth();
+    const userId = user?.uid || "";
     const [formData, setFormData] = useState<ProjectContextInput>(DEFAULT_PROJECT_CONTEXT);
     const [projectId, setProjectId] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -32,15 +38,19 @@ export default function ProjectContextEditor({
 
     // Load existing project on mount
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && userId) {
             loadProject();
         }
-    }, [isOpen]);
+    }, [isOpen, userId]);
 
     const loadProject = async () => {
+        if (!userId) return;
         setIsLoading(true);
         try {
-            const project = await getActiveProject();
+            // If editing a specific project, load it. Otherwise load active project.
+            const project = editProjectId
+                ? await getProject(editProjectId)
+                : await getActiveProject(userId);
             if (project) {
                 setProjectId(project.id);
                 setFormData({
@@ -76,6 +86,8 @@ export default function ProjectContextEditor({
             return;
         }
 
+        if (!userId) return;
+
         setIsSaving(true);
         setSaveStatus("idle");
 
@@ -91,7 +103,7 @@ export default function ProjectContextEditor({
                     updatedAt: new Date(),
                 };
             } else {
-                const newId = await createProject(formData);
+                const newId = await createProject(userId, formData);
                 setProjectId(newId);
                 savedProject = {
                     id: newId,
@@ -230,8 +242,8 @@ export default function ProjectContextEditor({
                                                 key={stage}
                                                 onClick={() => handleChange("currentStage", stage)}
                                                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${formData.currentStage === stage
-                                                        ? "bg-[var(--primary)] text-white"
-                                                        : "bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--border)]"
+                                                    ? "bg-[var(--primary)] text-white"
+                                                    : "bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--border)]"
                                                     }`}
                                             >
                                                 {STAGE_LABELS[stage]}

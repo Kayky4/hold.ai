@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import { Persona } from "@/types";
 import { getPersonas } from "@/lib/personas";
+import { MEETING_TEMPLATES, MeetingTemplate } from "@/types/templates";
+import TemplatePicker from "./TemplatePicker";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MeetingSetupProps {
     onStart: (persona1: Persona, persona2: Persona, topic: string) => void;
@@ -10,20 +13,27 @@ interface MeetingSetupProps {
 }
 
 export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
+    const { user } = useAuth();
+    const userId = user?.uid || "";
     const [personas, setPersonas] = useState<Persona[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedPersona1, setSelectedPersona1] = useState<Persona | null>(null);
     const [selectedPersona2, setSelectedPersona2] = useState<Persona | null>(null);
     const [topic, setTopic] = useState("");
+    const [showTemplatePicker, setShowTemplatePicker] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState<MeetingTemplate | null>(null);
 
     useEffect(() => {
-        loadPersonas();
-    }, []);
+        if (userId) {
+            loadPersonas();
+        }
+    }, [userId]);
 
     const loadPersonas = async () => {
+        if (!userId) return;
         setIsLoading(true);
         try {
-            const data = await getPersonas();
+            const data = await getPersonas(userId);
             setPersonas(data);
             // Auto-select first two if available
             if (data.length >= 2) {
@@ -43,6 +53,12 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
         if (selectedPersona1 && selectedPersona2 && topic.trim()) {
             onStart(selectedPersona1, selectedPersona2, topic.trim());
         }
+    };
+
+    const handleSelectTemplate = (template: MeetingTemplate, customizedPrompt: string) => {
+        setSelectedTemplate(template);
+        setTopic(customizedPrompt);
+        setShowTemplatePicker(false);
     };
 
     const topicSuggestions = [
@@ -129,10 +145,10 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
                                                 }}
                                                 disabled={selectedPersona2?.id === persona.id}
                                                 className={`w-full p-3 rounded-xl border transition-all duration-200 text-left ${selectedPersona1?.id === persona.id
-                                                        ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
-                                                        : selectedPersona2?.id === persona.id
-                                                            ? "opacity-50 cursor-not-allowed border-[var(--border)]"
-                                                            : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
+                                                    ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
+                                                    : selectedPersona2?.id === persona.id
+                                                        ? "opacity-50 cursor-not-allowed border-[var(--border)]"
+                                                        : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3">
@@ -167,10 +183,10 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
                                                 }}
                                                 disabled={selectedPersona1?.id === persona.id}
                                                 className={`w-full p-3 rounded-xl border transition-all duration-200 text-left ${selectedPersona2?.id === persona.id
-                                                        ? "bg-[#f97316]/10 border-[#f97316]/30"
-                                                        : selectedPersona1?.id === persona.id
-                                                            ? "opacity-50 cursor-not-allowed border-[var(--border)]"
-                                                            : "bg-[var(--background)] border-[var(--border)] hover:border-[#f97316]/30"
+                                                    ? "bg-[#f97316]/10 border-[#f97316]/30"
+                                                    : selectedPersona1?.id === persona.id
+                                                        ? "opacity-50 cursor-not-allowed border-[var(--border)]"
+                                                        : "bg-[var(--background)] border-[var(--border)] hover:border-[#f97316]/30"
                                                     }`}
                                             >
                                                 <div className="flex items-center gap-3">
@@ -189,12 +205,66 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
                                     </div>
                                 </div>
                             </div>
+                            {/* Templates Section */}
+                            <div>
+                                <div className="flex items-center justify-between mb-3">
+                                    <label className="block text-sm font-medium text-[var(--foreground)]">
+                                        Templates Rápidos
+                                    </label>
+                                    <button
+                                        onClick={() => setShowTemplatePicker(true)}
+                                        className="text-xs text-[var(--primary)] hover:underline"
+                                    >
+                                        Ver todos →
+                                    </button>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {MEETING_TEMPLATES.slice(0, 4).map(template => (
+                                        <button
+                                            key={template.id}
+                                            onClick={() => {
+                                                setSelectedTemplate(template);
+                                                setTopic(template.promptTemplate);
+                                            }}
+                                            className={`p-3 rounded-xl border text-left transition-all ${selectedTemplate?.id === template.id
+                                                ? "border-[var(--primary)] bg-[var(--primary)]/10"
+                                                : "border-[var(--border)] hover:border-[var(--primary)]/30"
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-lg">{template.icon}</span>
+                                                <div>
+                                                    <p className="text-sm font-medium text-[var(--foreground)]">
+                                                        {template.name}
+                                                    </p>
+                                                    <p className="text-xs text-[var(--muted)]">
+                                                        {template.estimatedDuration}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
                             {/* Topic Input */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
-                                    Tema do Debate
-                                </label>
+                                <div className="flex items-center justify-between mb-2">
+                                    <label className="block text-sm font-medium text-[var(--foreground)]">
+                                        Tema do Debate
+                                    </label>
+                                    {selectedTemplate && (
+                                        <span className="text-xs text-[var(--primary)] flex items-center gap-1">
+                                            {selectedTemplate.icon} {selectedTemplate.name}
+                                            <button
+                                                onClick={() => setSelectedTemplate(null)}
+                                                className="ml-1 text-[var(--muted)] hover:text-[var(--foreground)]"
+                                            >
+                                                ×
+                                            </button>
+                                        </span>
+                                    )}
+                                </div>
                                 <textarea
                                     value={topic}
                                     onChange={(e) => setTopic(e.target.value)}
@@ -202,17 +272,24 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
                                     rows={3}
                                     className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors resize-none"
                                 />
-                                <div className="flex flex-wrap gap-2 mt-3">
-                                    {topicSuggestions.map((suggestion, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setTopic(suggestion)}
-                                            className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:border-[var(--primary)]/30 hover:text-[var(--foreground)] transition-colors"
-                                        >
-                                            {suggestion}
-                                        </button>
-                                    ))}
-                                </div>
+                                {!selectedTemplate && (
+                                    <div className="flex flex-wrap gap-2 mt-3">
+                                        {topicSuggestions.map((suggestion, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setTopic(suggestion)}
+                                                className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:border-[var(--primary)]/30 hover:text-[var(--foreground)] transition-colors"
+                                            >
+                                                {suggestion}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                                {selectedTemplate && (
+                                    <p className="text-xs text-[var(--muted)] mt-2">
+                                        💡 Edite o texto acima para personalizar o template
+                                    </p>
+                                )}
                             </div>
 
                             {/* Preview */}
@@ -267,6 +344,14 @@ export default function MeetingSetup({ onStart, onClose }: MeetingSetupProps) {
                     </div>
                 )}
             </div>
+
+            {/* Template Picker Modal */}
+            {showTemplatePicker && (
+                <TemplatePicker
+                    onSelectTemplate={handleSelectTemplate}
+                    onClose={() => setShowTemplatePicker(false)}
+                />
+            )}
         </div>
     );
 }

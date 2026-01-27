@@ -8,6 +8,7 @@ import {
     deleteDoc,
     query,
     orderBy,
+    where,
     Timestamp,
     serverTimestamp,
     limit,
@@ -17,10 +18,11 @@ import { ProjectContext, ProjectContextInput } from "@/types/project";
 
 const COLLECTION_NAME = "projects";
 
-// Get all projects
-export async function getProjects(): Promise<ProjectContext[]> {
+// Get all projects for a user
+export async function getProjects(userId: string): Promise<ProjectContext[]> {
     const q = query(
         collection(db, COLLECTION_NAME),
+        where("userId", "==", userId),
         orderBy("updatedAt", "desc")
     );
     const snapshot = await getDocs(q);
@@ -50,10 +52,11 @@ export async function getProject(id: string): Promise<ProjectContext | null> {
     } as ProjectContext;
 }
 
-// Get the active/most recent project (for quick access)
-export async function getActiveProject(): Promise<ProjectContext | null> {
+// Get the active/most recent project for a user
+export async function getActiveProject(userId: string): Promise<ProjectContext | null> {
     const q = query(
         collection(db, COLLECTION_NAME),
+        where("userId", "==", userId),
         orderBy("updatedAt", "desc"),
         limit(1)
     );
@@ -63,10 +66,10 @@ export async function getActiveProject(): Promise<ProjectContext | null> {
         return null;
     }
 
-    const doc = snapshot.docs[0];
-    const data = doc.data();
+    const docItem = snapshot.docs[0];
+    const data = docItem.data();
     return {
-        id: doc.id,
+        id: docItem.id,
         ...data,
         createdAt: (data.createdAt as Timestamp)?.toDate() || new Date(),
         updatedAt: (data.updatedAt as Timestamp)?.toDate() || new Date(),
@@ -74,11 +77,18 @@ export async function getActiveProject(): Promise<ProjectContext | null> {
 }
 
 // Create a new project
-export async function createProject(
-    input: ProjectContextInput
-): Promise<string> {
+export async function createProject(userId: string, data: ProjectContextInput): Promise<string> {
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
-        ...input,
+        userId,
+        name: data.name,
+        description: data.description || "",
+        problemSolved: data.problemSolved || "",
+        targetAudience: data.targetAudience || "",
+        differentials: data.differentials || "",
+        currentStage: data.currentStage || "idea",
+        keyMetrics: data.keyMetrics || "",
+        currentGoals: data.currentGoals || "",
+        additionalNotes: data.additionalNotes || "",
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
@@ -86,13 +96,10 @@ export async function createProject(
 }
 
 // Update a project
-export async function updateProject(
-    id: string,
-    input: Partial<ProjectContextInput>
-): Promise<void> {
+export async function updateProject(id: string, data: Partial<ProjectContextInput>): Promise<void> {
     const docRef = doc(db, COLLECTION_NAME, id);
     await updateDoc(docRef, {
-        ...input,
+        ...data,
         updatedAt: serverTimestamp(),
     });
 }
@@ -102,34 +109,39 @@ export async function deleteProject(id: string): Promise<void> {
     await deleteDoc(doc(db, COLLECTION_NAME, id));
 }
 
-// Generate context string for persona prompts
+// Generate context prompt from project
 export function generateContextPrompt(project: ProjectContext): string {
-    return `## Contexto do Projeto: ${project.name}
+    let prompt = `## Contexto do Projeto\n\n`;
+    prompt += `**Nome**: ${project.name}\n`;
+    prompt += `**Estágio**: ${project.currentStage}\n`;
 
-### Descrição
-${project.description || "Não informado"}
+    if (project.description) {
+        prompt += `**Descrição**: ${project.description}\n`;
+    }
 
-### Problema que Resolve
-${project.problemSolved || "Não informado"}
+    if (project.problemSolved) {
+        prompt += `**Problema Resolvido**: ${project.problemSolved}\n`;
+    }
 
-### Público-Alvo
-${project.targetAudience || "Não informado"}
+    if (project.targetAudience) {
+        prompt += `**Público-alvo**: ${project.targetAudience}\n`;
+    }
 
-### Diferenciais
-${project.differentials || "Não informado"}
+    if (project.differentials) {
+        prompt += `**Diferenciais**: ${project.differentials}\n`;
+    }
 
-### Estágio Atual
-${project.currentStage === "idea" ? "Ideia" :
-            project.currentStage === "validation" ? "Validação" :
-                project.currentStage === "mvp" ? "MVP" :
-                    project.currentStage === "growth" ? "Crescimento" : "Escala"}
+    if (project.keyMetrics) {
+        prompt += `**Métricas-chave**: ${project.keyMetrics}\n`;
+    }
 
-### Métricas-Chave
-${project.keyMetrics || "Não informado"}
+    if (project.currentGoals) {
+        prompt += `**Objetivos atuais**: ${project.currentGoals}\n`;
+    }
 
-### Objetivos Atuais
-${project.currentGoals || "Não informado"}
+    if (project.additionalNotes) {
+        prompt += `**Notas adicionais**: ${project.additionalNotes}\n`;
+    }
 
-${project.additionalNotes ? `### Notas Adicionais\n${project.additionalNotes}` : ""}
-`;
+    return prompt;
 }

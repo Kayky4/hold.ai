@@ -11,6 +11,10 @@ import MeetingRoom from "./MeetingRoom";
 import MeetingViewer from "./MeetingViewer";
 import SettingsModal from "./SettingsModal";
 import ModelSelector from "./ModelSelector";
+import DecisionsDashboard from "./DecisionsDashboard";
+import ProjectManager from "./ProjectManager";
+import MetricsDashboard from "./MetricsDashboard";
+import { useAuth } from "@/contexts/AuthContext";
 import {
     getConversations,
     getConversation,
@@ -29,6 +33,8 @@ function generateId(): string {
 }
 
 export default function ChatInterface() {
+    const { user } = useAuth();
+    const userId = user?.uid || "";
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const [meetings, setMeetings] = useState<Meeting[]>([]);
     const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
@@ -41,6 +47,9 @@ export default function ChatInterface() {
     const [showPersonaManager, setShowPersonaManager] = useState(false);
     const [showMeetingSetup, setShowMeetingSetup] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [showDecisions, setShowDecisions] = useState(false);
+    const [showProjectManager, setShowProjectManager] = useState(false);
+    const [showMetrics, setShowMetrics] = useState(false);
     const [projectContext, setProjectContext] = useState<ProjectContext | null>(null);
     const [selectedModel, setSelectedModel] = useState<AIModel>(DEFAULT_MODEL);
     const [meetingConfig, setMeetingConfig] = useState<{
@@ -58,8 +67,10 @@ export default function ChatInterface() {
 
     // Load conversations on mount
     useEffect(() => {
-        loadConversations();
-    }, []);
+        if (userId) {
+            loadConversations();
+        }
+    }, [userId]);
 
     useEffect(() => {
         scrollToBottom();
@@ -74,12 +85,13 @@ export default function ChatInterface() {
     }, [input]);
 
     const loadConversations = async () => {
+        if (!userId) return;
         setIsSidebarLoading(true);
         try {
             const [convs, meets, project] = await Promise.all([
-                getConversations(),
-                getMeetings(),
-                getActiveProject(),
+                getConversations(userId),
+                getMeetings(userId),
+                getActiveProject(userId),
             ]);
             setConversations(convs);
             setMeetings(meets);
@@ -107,8 +119,9 @@ export default function ChatInterface() {
     };
 
     const handleNewConversation = async () => {
+        if (!userId) return;
         try {
-            const id = await createConversation();
+            const id = await createConversation(userId);
             setActiveConversationId(id);
             setMessages([]);
             await loadConversations();
@@ -198,8 +211,9 @@ export default function ChatInterface() {
         let isFirstMessage = false;
 
         if (!conversationId) {
+            if (!userId) return;
             try {
-                conversationId = await createConversation();
+                conversationId = await createConversation(userId);
                 setActiveConversationId(conversationId);
                 isFirstMessage = true;
             } catch (error) {
@@ -319,6 +333,7 @@ export default function ChatInterface() {
                 meetings={meetings}
                 activeConversationId={activeConversationId}
                 activeMeetingId={viewingMeeting?.id || null}
+                currentProject={projectContext}
                 onSelectConversation={handleSelectConversation}
                 onSelectMeeting={handleSelectMeeting}
                 onNewConversation={handleNewConversation}
@@ -326,6 +341,9 @@ export default function ChatInterface() {
                 onDeleteMeeting={handleDeleteMeeting}
                 onStartMeeting={() => setShowMeetingSetup(true)}
                 onOpenSettings={() => setShowSettings(true)}
+                onOpenMetrics={() => setShowMetrics(true)}
+                onSelectProject={setProjectContext}
+                onManageProjects={() => setShowProjectManager(true)}
                 isLoading={isSidebarLoading}
             />
 
@@ -362,6 +380,16 @@ export default function ChatInterface() {
                                     Salvando...
                                 </div>
                             )}
+                            <button
+                                onClick={() => setShowDecisions(true)}
+                                className="flex items-center gap-2 px-3 py-2 text-sm bg-violet-500/10 hover:bg-violet-500/20 text-violet-500 rounded-lg transition-colors"
+                                title="Banco de Decisões"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                                <span className="hidden sm:inline">Decisões</span>
+                            </button>
                             <ModelSelector
                                 selectedModel={selectedModel}
                                 onModelChange={setSelectedModel}
@@ -528,6 +556,29 @@ export default function ChatInterface() {
             <SettingsModal
                 isOpen={showSettings}
                 onClose={() => setShowSettings(false)}
+            />
+
+            {/* Decisions Dashboard Modal */}
+            {showDecisions && (
+                <DecisionsDashboard
+                    projectId={projectContext?.id}
+                    onClose={() => setShowDecisions(false)}
+                />
+            )}
+
+            {/* Project Manager Modal */}
+            <ProjectManager
+                isOpen={showProjectManager}
+                onClose={() => setShowProjectManager(false)}
+                onSelectProject={setProjectContext}
+                currentProject={projectContext}
+            />
+
+            {/* Metrics Dashboard Modal */}
+            <MetricsDashboard
+                isOpen={showMetrics}
+                onClose={() => setShowMetrics(false)}
+                projectId={projectContext?.id}
             />
         </div>
     );

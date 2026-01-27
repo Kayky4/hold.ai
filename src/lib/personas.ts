@@ -8,6 +8,7 @@ import {
     deleteDoc,
     query,
     orderBy,
+    where,
     serverTimestamp,
     Timestamp,
 } from "firebase/firestore";
@@ -49,8 +50,9 @@ function timestampToDate(timestamp: Timestamp | null): Date {
 }
 
 // Create a new persona
-export async function createPersona(persona: Omit<Persona, "id">): Promise<string> {
+export async function createPersona(userId: string, persona: Omit<Persona, "id">): Promise<string> {
     const docRef = await addDoc(collection(db, PERSONAS_COLLECTION), {
+        userId,
         ...persona,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -58,10 +60,11 @@ export async function createPersona(persona: Omit<Persona, "id">): Promise<strin
     return docRef.id;
 }
 
-// Get all personas
-export async function getPersonas(): Promise<Persona[]> {
+// Get all personas for a user
+export async function getPersonas(userId: string): Promise<Persona[]> {
     const q = query(
         collection(db, PERSONAS_COLLECTION),
+        where("userId", "==", userId),
         orderBy("createdAt", "desc")
     );
     const querySnapshot = await getDocs(q);

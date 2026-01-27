@@ -8,6 +8,8 @@ import { generateSystemPrompt } from "@/lib/personas";
 import { getActiveProject, generateContextPrompt } from "@/lib/projects";
 import { createMeeting, updateMeetingMessages, MeetingMessage as FirestoreMeetingMessage } from "@/lib/meetings";
 import ModelSelector from "./ModelSelector";
+import MeetingSummary from "./MeetingSummary";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MeetingMessage {
     id: string;
@@ -38,6 +40,8 @@ export default function MeetingRoom({
     onClose,
     onMeetingSaved,
 }: MeetingRoomProps) {
+    const { user } = useAuth();
+    const userId = user?.uid || "";
     const [messages, setMessages] = useState<MeetingMessage[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +54,12 @@ export default function MeetingRoom({
     const [error, setError] = useState<string | null>(null);
     const [showEndConfirm, setShowEndConfirm] = useState(false);
     const [selectedModel, setSelectedModel] = useState<AIModel>(DEFAULT_MODEL);
+    const [showSummary, setShowSummary] = useState(false);
+    const [summaryData, setSummaryData] = useState<{
+        summary: string;
+        decisions: Array<{ decision: string; context: string; status: "pending" | "taken" }>;
+    } | null>(null);
+    const [isGeneratingSummary, setIsGeneratingSummary] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -76,15 +86,16 @@ export default function MeetingRoom({
     // Load project context on mount
     useEffect(() => {
         const loadContext = async () => {
+            if (!userId) return;
             try {
-                const project = await getActiveProject();
+                const project = await getActiveProject(userId);
                 setProjectContext(project);
             } catch (error) {
                 console.error("Error loading project context:", error);
             }
         };
         loadContext();
-    }, []);
+    }, [userId]);
 
     // Generate context string for prompts
     const getContextString = () => {
@@ -105,6 +116,79 @@ export default function MeetingRoom({
             console.error("Error saving meeting:", error);
         }
     }, [onMeetingSaved]);
+
+    // Generate meeting summary
+    const generateMeetingSummary = useCallback(async () => {
+        if (messages.length === 0) return;
+
+        setIsGeneratingSummary(true);
+        try {
+            const response = await fetch("/api/summary", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: messages.map(m => ({
+                        speaker: m.speaker,
+                        speakerIndex: m.speakerIndex,
+                        content: m.content,
+                        timestamp: m.timestamp,
+                    })),
+                    topic: initialTopic,
+                    persona1Name: persona1.name,
+                    persona2Name: persona2.name,
+                    projectContext: getContextString(),
+                }),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("API Error:", response.status, errorText);
+                throw new Error(`Failed to generate summary: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setSummaryData({
+                summary: data.summary,
+                decisions: data.decisions || [],
+            });
+            setShowSummary(true);
+        } catch (error) {
+            console.error("Error generating summary:", error);
+            // Show a basic fallback summary
+            const fallbackSummary = `# Resumo da Reunião
+
+## Tema: ${initialTopic}
+
+### Participantes
+- ${persona1.name}
+- ${persona2.name}
+
+### Conversa
+A reunião teve ${messages.length} mensagens trocadas.
+
+---
+
+*⚠️ Não foi possível gerar o resumo automático via IA. Tente novamente ou verifique sua conexão.*`;
+
+            setSummaryData({
+                summary: fallbackSummary,
+                decisions: [],
+            });
+            setShowSummary(true);
+        } finally {
+            setIsGeneratingSummary(false);
+        }
+    }, [messages, initialTopic, persona1.name, persona2.name, getContextString]);
+
+    // Handle end meeting with summary generation
+    const handleEndMeeting = useCallback(async () => {
+        setShowEndConfirm(false);
+        setMeetingStatus("ended");
+        // Show the summary modal immediately with loading state
+        setShowSummary(true);
+        await generateMeetingSummary();
+    }, [generateMeetingSummary]);
+
 
     const getPersonaResponse = async (
         speakerIndex: number,
@@ -139,6 +223,7 @@ export default function MeetingRoom({
     };
 
     const startMeeting = async () => {
+        if (!userId) return;
         setMeetingStatus("running");
         setIsLoading(true);
         setError(null);
@@ -146,7 +231,14 @@ export default function MeetingRoom({
         // Create meeting in Firestore
         let newMeetingId: string | null = null;
         try {
-            newMeetingId = await createMeeting(persona1.name, persona2.name, initialTopic);
+            newMeetingId = await createMeeting(userId, {
+                title: `${persona1.name} vs ${persona2.name}: ${initialTopic.substring(0, 50)}`,
+                persona1Name: persona1.name,
+                persona2Name: persona2.name,
+                topic: initialTopic,
+                messages: [],
+                rounds: 0,
+            });
             setMeetingId(newMeetingId);
         } catch (error) {
             console.error("Error creating meeting:", error);
@@ -764,22 +856,48 @@ export default function MeetingRoom({
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowEndConfirm(false)}
-                                className="flex-1 px-4 py-2.5 bg-[var(--background)] hover:bg-[var(--border)] text-[var(--foreground)] border border-[var(--border)] rounded-xl font-medium text-sm transition-colors"
+                                disabled={isGeneratingSummary}
+                                className="flex-1 px-4 py-2.5 bg-[var(--background)] hover:bg-[var(--border)] text-[var(--foreground)] border border-[var(--border)] rounded-xl font-medium text-sm transition-colors disabled:opacity-50"
                             >
                                 Continuar Reunião
                             </button>
                             <button
-                                onClick={() => {
-                                    setMeetingStatus("ended");
-                                    setShowEndConfirm(false);
-                                }}
-                                className="flex-1 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium text-sm transition-colors"
+                                onClick={handleEndMeeting}
+                                disabled={isGeneratingSummary}
+                                className="flex-1 px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-medium text-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                             >
-                                Encerrar
+                                {isGeneratingSummary ? (
+                                    <>
+                                        <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                                        Gerando Resumo...
+                                    </>
+                                ) : (
+                                    "Encerrar e Gerar Resumo"
+                                )}
                             </button>
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Meeting Summary Modal */}
+            {showSummary && (
+                <MeetingSummary
+                    summary={summaryData?.summary}
+                    decisions={summaryData?.decisions}
+                    topic={initialTopic}
+                    personas={[persona1.name, persona2.name]}
+                    meetingId={meetingId || `temp-${Date.now()}`}
+                    meetingTitle={initialTopic}
+                    projectId={projectContext?.id}
+                    messageCount={messages.length}
+                    isLoading={isGeneratingSummary}
+                    onClose={() => {
+                        setShowSummary(false);
+                        onClose();
+                    }}
+                    onDecisionsSaved={onMeetingSaved}
+                />
             )}
         </div>
     );

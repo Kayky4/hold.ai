@@ -8,6 +8,7 @@ import {
     deleteDoc,
     query,
     orderBy,
+    where,
     Timestamp,
     serverTimestamp,
 } from "firebase/firestore";
@@ -22,8 +23,9 @@ function timestampToDate(timestamp: Timestamp | null): Date {
 }
 
 // Create a new conversation
-export async function createConversation(title: string = "Nova Conversa"): Promise<string> {
+export async function createConversation(userId: string, title: string = "Nova Conversa"): Promise<string> {
     const docRef = await addDoc(collection(db, CONVERSATIONS_COLLECTION), {
+        userId,
         title,
         messages: [],
         createdAt: serverTimestamp(),
@@ -32,10 +34,11 @@ export async function createConversation(title: string = "Nova Conversa"): Promi
     return docRef.id;
 }
 
-// Get all conversations
-export async function getConversations(): Promise<Conversation[]> {
+// Get all conversations for a user
+export async function getConversations(userId: string): Promise<Conversation[]> {
     const q = query(
         collection(db, CONVERSATIONS_COLLECTION),
+        where("userId", "==", userId),
         orderBy("updatedAt", "desc")
     );
     const querySnapshot = await getDocs(q);
