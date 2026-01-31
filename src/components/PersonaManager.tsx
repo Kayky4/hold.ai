@@ -123,16 +123,16 @@ export default function PersonaManager({
 
             {/* Modal */}
             <div
-                className="relative bg-[var(--card)] border border-[var(--border)] rounded-2xl w-full max-w-2xl max-h-[90vh] mx-4 shadow-2xl animate-fade-in overflow-hidden flex flex-col"
+                className="relative bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] mx-4 shadow-2xl animate-fade-in overflow-hidden flex flex-col"
                 style={{ animationDuration: "0.2s" }}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-[var(--border)]">
+                <div className="flex items-center justify-between p-6 border-b border-border">
                     <div>
-                        <h2 className="text-xl font-semibold text-[var(--foreground)]">
+                        <h2 className="text-xl font-semibold text-foreground">
                             {showForm ? (editingPersona ? "Editar Persona" : "Nova Persona") : "Gerenciar Personas"}
                         </h2>
-                        <p className="text-sm text-[var(--muted-foreground)] mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                             {showForm
                                 ? "Configure os atributos da persona"
                                 : "Selecione ou crie personas para suas reuniões"}
@@ -140,7 +140,7 @@ export default function PersonaManager({
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background)] transition-colors"
+                        className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-background transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -168,7 +168,7 @@ export default function PersonaManager({
                                     setEditingPersona(null);
                                     setShowForm(true);
                                 }}
-                                className="w-full p-4 mb-4 border-2 border-dashed border-[var(--border)] rounded-xl hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 transition-all duration-200 flex items-center justify-center gap-2 text-[var(--muted-foreground)] hover:text-[var(--primary)]"
+                                className="w-full p-4 mb-4 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/5 transition-all duration-200 flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -179,17 +179,17 @@ export default function PersonaManager({
                             {/* Personas List */}
                             {isLoading ? (
                                 <div className="flex items-center justify-center py-12">
-                                    <div className="w-8 h-8 border-2 border-[var(--muted)] border-t-[var(--primary)] rounded-full animate-spin"></div>
+                                    <div className="w-8 h-8 border-2 border-muted border-t-primary rounded-full animate-spin"></div>
                                 </div>
                             ) : personas.length === 0 ? (
                                 <div className="text-center py-12">
-                                    <div className="w-16 h-16 rounded-2xl bg-[var(--background)] flex items-center justify-center mx-auto mb-4">
-                                        <svg className="w-8 h-8 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                         </svg>
                                     </div>
-                                    <p className="text-[var(--muted-foreground)]">Nenhuma persona criada ainda</p>
-                                    <p className="text-sm text-[var(--muted)] mt-1">
+                                    <p className="text-muted-foreground">Nenhuma persona criada ainda</p>
+                                    <p className="text-sm text-muted mt-1">
                                         Clique em &quot;Criar Nova Persona&quot; para começar
                                     </p>
                                 </div>
@@ -200,15 +200,15 @@ export default function PersonaManager({
                                             key={persona.id}
                                             onClick={() => handleSelectPersona(persona)}
                                             className={`group p-4 rounded-xl cursor-pointer transition-all duration-200 border ${selectedPersonaId === persona.id
-                                                ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
-                                                : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
+                                                ? "bg-primary/10 border-primary/30"
+                                                : "bg-background border-border hover:border-primary/30"
                                                 }`}
                                         >
                                             <div className="flex items-start justify-between">
                                                 <div className="flex items-start gap-3">
                                                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${selectedPersonaId === persona.id
-                                                        ? "bg-[var(--primary)]"
-                                                        : "bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)]"
+                                                        ? "bg-primary"
+                                                        : "bg-gradient-to-br from-primary to-secondary"
                                                         }`}>
                                                         <span className="text-white font-bold text-sm">
                                                             {persona.name.charAt(0).toUpperCase()}
@@ -217,25 +217,25 @@ export default function PersonaManager({
                                                     <div>
                                                         <div className="flex items-center gap-2">
                                                             <h3 className={`font-medium ${selectedPersonaId === persona.id
-                                                                ? "text-[var(--primary)]"
-                                                                : "text-[var(--foreground)]"
+                                                                ? "text-primary"
+                                                                : "text-foreground"
                                                                 }`}>
                                                                 {persona.name}
                                                             </h3>
                                                             {selectedPersonaId === persona.id && (
-                                                                <span className="px-2 py-0.5 text-xs bg-[var(--primary)] text-white rounded-full">
+                                                                <span className="px-2 py-0.5 text-xs bg-primary text-white rounded-full">
                                                                     Ativo
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <p className="text-sm text-[var(--muted-foreground)] mt-0.5">
+                                                        <p className="text-sm text-muted-foreground mt-0.5">
                                                             {persona.description}
                                                         </p>
                                                         <div className="flex items-center gap-2 mt-2">
-                                                            <span className="text-xs px-2 py-1 bg-[var(--card)] rounded-lg text-[var(--muted)]">
+                                                            <span className="text-xs px-2 py-1 bg-card rounded-lg text-muted">
                                                                 {persona.style}
                                                             </span>
-                                                            <span className="text-xs px-2 py-1 bg-[var(--card)] rounded-lg text-[var(--muted)]">
+                                                            <span className="text-xs px-2 py-1 bg-card rounded-lg text-muted">
                                                                 {persona.riskTolerance < 0.3
                                                                     ? "Conservador"
                                                                     : persona.riskTolerance < 0.7
@@ -249,7 +249,7 @@ export default function PersonaManager({
                                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <button
                                                         onClick={(e) => handleEditClick(persona, e)}
-                                                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--card)] transition-colors"
+                                                        className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-card transition-colors"
                                                         title="Editar"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@ export default function PersonaManager({
                                                     </button>
                                                     <button
                                                         onClick={(e) => handleDeleteClick(persona, e)}
-                                                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--destructive)] hover:bg-[var(--card)] transition-colors"
+                                                        className="p-2 rounded-lg text-muted hover:text-destructive hover:bg-card transition-colors"
                                                         title="Excluir"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

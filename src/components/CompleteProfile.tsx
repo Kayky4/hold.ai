@@ -69,7 +69,7 @@ export default function CompleteProfile() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
             {/* Theme Toggle */}
             <div className="absolute top-4 right-4">
                 <ThemeToggle />
@@ -83,10 +83,10 @@ export default function CompleteProfile() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </div>
-                    <h1 className="text-2xl font-bold text-[var(--foreground)]">
+                    <h1 className="text-2xl font-bold text-foreground">
                         Complete seu Perfil
                     </h1>
-                    <p className="text-[var(--muted-foreground)] mt-2">
+                    <p className="text-muted-foreground mt-2">
                         Nos conte um pouco mais sobre você para personalizar sua experiência
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export default function CompleteProfile() {
                         <img
                             src={user.photoURL}
                             alt="Foto de perfil"
-                            className="w-20 h-20 rounded-full border-4 border-[var(--primary)]/20"
+                            className="w-20 h-20 rounded-full border-4 border-primary/20"
                         />
                     </div>
                 )}
@@ -111,10 +111,10 @@ export default function CompleteProfile() {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 space-y-5">
+                    <div className="bg-card border border-border rounded-2xl p-6 space-y-5">
                         {/* Name */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Como podemos te chamar? *
                             </label>
                             <input
@@ -123,13 +123,13 @@ export default function CompleteProfile() {
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="Seu nome"
                                 required
-                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                         </div>
 
                         {/* Company */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Empresa ou Projeto
                             </label>
                             <input
@@ -137,13 +137,13 @@ export default function CompleteProfile() {
                                 value={company}
                                 onChange={(e) => setCompany(e.target.value)}
                                 placeholder="Nome da sua startup ou empresa"
-                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                         </div>
 
                         {/* Role */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Qual seu papel?
                             </label>
                             <div className="grid grid-cols-2 gap-2">
@@ -153,8 +153,8 @@ export default function CompleteProfile() {
                                         type="button"
                                         onClick={() => setRole(r.value)}
                                         className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${role === r.value
-                                            ? "bg-[var(--primary)] text-white"
-                                            : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                            ? "bg-primary text-white"
+                                            : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {r.label}
@@ -165,7 +165,7 @@ export default function CompleteProfile() {
 
                         {/* Project Type */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Tipo de projeto
                             </label>
                             <div className="grid grid-cols-2 gap-2">
@@ -175,8 +175,8 @@ export default function CompleteProfile() {
                                         type="button"
                                         onClick={() => setProjectType(t.value)}
                                         className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${projectType === t.value
-                                            ? "bg-[var(--primary)] text-white"
-                                            : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                            ? "bg-primary text-white"
+                                            : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {t.label}
@@ -202,7 +202,7 @@ export default function CompleteProfile() {
                         )}
                     </button>
 
-                    <p className="text-xs text-[var(--muted)] text-center">
+                    <p className="text-xs text-muted text-center">
                         Essas informações nos ajudam a personalizar suas experiências e sugestões.
                     </p>
                 </form>

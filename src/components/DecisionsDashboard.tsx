@@ -106,9 +106,9 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="bg-card rounded-2xl shadow-2xl border border-border max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="px-6 py-4 border-b border-[var(--border)] bg-gradient-to-r from-violet-500/10 to-purple-500/10">
+                <div className="px-6 py-4 border-b border-border bg-gradient-to-r from-violet-500/10 to-purple-500/10">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center">
@@ -117,17 +117,17 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                                 </svg>
                             </div>
                             <div>
-                                <h2 className="text-xl font-semibold text-[var(--foreground)]">Banco de Decisões</h2>
-                                <p className="text-sm text-[var(--muted-foreground)]">
+                                <h2 className="text-xl font-semibold text-foreground">Banco de Decisões</h2>
+                                <p className="text-sm text-muted-foreground">
                                     Este é seu ativo mais valioso
                                 </p>
                             </div>
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 rounded-lg hover:bg-[var(--background)] transition-colors"
+                            className="p-2 rounded-lg hover:bg-background transition-colors"
                         >
-                            <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
@@ -139,11 +139,11 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                             <div className="text-3xl font-bold bg-gradient-to-r from-violet-500 to-purple-500 text-transparent bg-clip-text">
                                 {totalCount}
                             </div>
-                            <div className="text-sm text-[var(--muted-foreground)]">
+                            <div className="text-sm text-muted-foreground">
                                 decisões<br />tomadas no Hold
                             </div>
                         </div>
-                        <div className="h-10 w-px bg-[var(--border)]" />
+                        <div className="h-10 w-px bg-border" />
                         <div className="flex gap-2">
                             <span className="px-2 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-500">
                                 {decisions.filter(d => d.status === "taken").length} decididas
@@ -159,14 +159,14 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                 </div>
 
                 {/* Filters */}
-                <div className="px-6 py-3 border-b border-[var(--border)] flex items-center gap-2">
+                <div className="px-6 py-3 border-b border-border flex items-center gap-2">
                     {(["all", "pending", "taken", "revisited"] as const).map((f) => (
                         <button
                             key={f}
                             onClick={() => setFilter(f)}
                             className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${filter === f
-                                ? "bg-[var(--primary)] text-white"
-                                : "bg-[var(--background)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                ? "bg-primary text-white"
+                                : "bg-background text-foreground hover:bg-border"
                                 }`}
                         >
                             {f === "all" ? "Todas" : getStatusLabel(f)}
@@ -178,20 +178,20 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="flex items-center justify-center h-32">
-                            <div className="w-8 h-8 border-2 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
+                            <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                         </div>
                     ) : filteredDecisions.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-32 text-center">
-                            <svg className="w-12 h-12 text-[var(--muted)] mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-12 h-12 text-muted mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
-                            <p className="text-[var(--muted-foreground)]">
+                            <p className="text-muted-foreground">
                                 {filter === "all"
                                     ? "Nenhuma decisão registrada ainda"
                                     : `Nenhuma decisão ${getStatusLabel(filter).toLowerCase()}`
                                 }
                             </p>
-                            <p className="text-sm text-[var(--muted)] mt-1">
+                            <p className="text-sm text-muted mt-1">
                                 As decisões são extraídas automaticamente ao encerrar reuniões
                             </p>
                         </div>
@@ -200,7 +200,7 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                             {filteredDecisions.map((decision) => (
                                 <div
                                     key={decision.id}
-                                    className="p-4 bg-[var(--background)] rounded-xl border border-[var(--border)] hover:border-[var(--primary)]/30 transition-colors group"
+                                    className="p-4 bg-background rounded-xl border border-border hover:border-primary/30 transition-colors group"
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className="flex-1 min-w-0">
@@ -210,11 +210,11 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                                                 </span>
                                                 {getOutcomeIcon(decision.outcome ?? null)}
                                             </div>
-                                            <p className="font-medium text-[var(--foreground)]">{decision.decision}</p>
+                                            <p className="font-medium text-foreground">{decision.decision}</p>
                                             {decision.context && (
-                                                <p className="text-sm text-[var(--muted-foreground)] mt-1">{decision.context}</p>
+                                                <p className="text-sm text-muted-foreground mt-1">{decision.context}</p>
                                             )}
-                                            <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted)]">
+                                            <div className="flex items-center gap-4 mt-2 text-xs text-muted">
                                                 <span>📅 {new Date(decision.createdAt).toLocaleDateString("pt-BR")}</span>
                                                 <span>📍 {decision.meetingTitle}</span>
                                                 <span>👥 {decision.personas.join(", ")}</span>
@@ -247,7 +247,7 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                                             )}
                                             <button
                                                 onClick={() => handleDelete(decision.id)}
-                                                className="p-1.5 rounded-lg hover:bg-red-500/20 text-[var(--muted)] hover:text-red-500 transition-colors"
+                                                className="p-1.5 rounded-lg hover:bg-red-500/20 text-muted hover:text-red-500 transition-colors"
                                                 title="Excluir"
                                             >
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,13 +263,13 @@ export default function DecisionsDashboard({ projectId, onClose }: DecisionsDash
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--background)] flex items-center justify-between">
-                    <p className="text-xs text-[var(--muted)]">
+                <div className="px-6 py-4 border-t border-border bg-background flex items-center justify-between">
+                    <p className="text-xs text-muted">
                         💡 Não perca seu histórico de raciocínio
                     </p>
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-sm font-medium transition-colors"
+                        className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium transition-colors"
                     >
                         Fechar
                     </button>

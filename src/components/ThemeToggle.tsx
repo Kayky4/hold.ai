@@ -9,7 +9,7 @@ export default function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="relative w-14 h-7 rounded-full bg-[var(--background)] border border-[var(--border)] transition-all duration-300 hover:border-[var(--primary)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30 group overflow-hidden"
+            className="relative w-14 h-7 rounded-full bg-background border border-border transition-all duration-300 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/30 group overflow-hidden"
             aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
         >
             {/* Background gradient animation */}

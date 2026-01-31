@@ -131,20 +131,20 @@ export default function ProjectContextEditor({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="w-full max-w-3xl max-h-[90vh] bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] overflow-hidden flex flex-col">
+            <div className="w-full max-w-3xl max-h-[90vh] bg-card rounded-2xl shadow-2xl border border-border overflow-hidden flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                     <div>
-                        <h2 className="text-xl font-bold text-[var(--foreground)]">
+                        <h2 className="text-xl font-bold text-foreground">
                             Contexto do Projeto
                         </h2>
-                        <p className="text-sm text-[var(--muted-foreground)]">
+                        <p className="text-sm text-muted-foreground">
                             Defina o contexto que suas personas irão considerar
                         </p>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background)] transition-colors"
+                        className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-background transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -156,13 +156,13 @@ export default function ProjectContextEditor({
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                     {isLoading ? (
                         <div className="flex items-center justify-center py-12">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--primary)]"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                         </div>
                     ) : (
                         <>
                             {/* Project Name */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Nome do Projeto *
                                 </label>
                                 <input
@@ -170,13 +170,13 @@ export default function ProjectContextEditor({
                                     value={formData.name}
                                     onChange={(e) => handleChange("name", e.target.value)}
                                     placeholder="Ex: Hold.ai, MeuSaaS, StartupX..."
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                                 />
                             </div>
 
                             {/* Description */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Descrição do Projeto
                                 </label>
                                 <textarea
@@ -184,13 +184,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("description", e.target.value)}
                                     placeholder="Descreva seu projeto em 2-3 frases..."
                                     rows={3}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Problem Solved */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Problema que Resolve
                                 </label>
                                 <textarea
@@ -198,13 +198,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("problemSolved", e.target.value)}
                                     placeholder="Qual dor ou problema seu produto resolve?"
                                     rows={2}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Target Audience */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Público-Alvo
                                 </label>
                                 <textarea
@@ -212,13 +212,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("targetAudience", e.target.value)}
                                     placeholder="Quem são seus clientes ideais? Qual o perfil, cargo, empresa?"
                                     rows={2}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Differentials */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Diferenciais
                                 </label>
                                 <textarea
@@ -226,13 +226,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("differentials", e.target.value)}
                                     placeholder="O que te diferencia dos concorrentes? Qual é sua vantagem competitiva?"
                                     rows={2}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Current Stage */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Estágio Atual
                                 </label>
                                 <div className="grid grid-cols-5 gap-2">
@@ -242,8 +242,8 @@ export default function ProjectContextEditor({
                                                 key={stage}
                                                 onClick={() => handleChange("currentStage", stage)}
                                                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${formData.currentStage === stage
-                                                    ? "bg-[var(--primary)] text-white"
-                                                    : "bg-[var(--background)] text-[var(--muted-foreground)] hover:bg-[var(--border)]"
+                                                    ? "bg-primary text-white"
+                                                    : "bg-background text-muted-foreground hover:bg-border"
                                                     }`}
                                             >
                                                 {STAGE_LABELS[stage]}
@@ -255,7 +255,7 @@ export default function ProjectContextEditor({
 
                             {/* Key Metrics */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Métricas-Chave
                                 </label>
                                 <textarea
@@ -263,13 +263,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("keyMetrics", e.target.value)}
                                     placeholder="MRR, churn, CAC, LTV, usuários ativos, etc..."
                                     rows={2}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Current Goals */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Objetivos Atuais
                                 </label>
                                 <textarea
@@ -277,13 +277,13 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("currentGoals", e.target.value)}
                                     placeholder="O que você está tentando alcançar agora? Qual o foco das próximas semanas?"
                                     rows={2}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
 
                             {/* Additional Notes */}
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Notas Adicionais
                                 </label>
                                 <textarea
@@ -291,7 +291,7 @@ export default function ProjectContextEditor({
                                     onChange={(e) => handleChange("additionalNotes", e.target.value)}
                                     placeholder="Qualquer informação extra que as personas devem saber..."
                                     rows={3}
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-lg text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                                 />
                             </div>
                         </>
@@ -299,7 +299,7 @@ export default function ProjectContextEditor({
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-background">
                     <div className="text-sm">
                         {saveStatus === "saved" && (
                             <span className="text-green-500 flex items-center gap-1">
@@ -316,14 +316,14 @@ export default function ProjectContextEditor({
                     <div className="flex gap-3">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-colors"
+                            className="px-4 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-border transition-colors"
                         >
                             Cancelar
                         </button>
                         <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="px-6 py-2 bg-[var(--primary)] hover:opacity-90 text-white rounded-lg font-medium transition-all disabled:opacity-50 flex items-center gap-2"
+                            className="px-6 py-2 bg-primary hover:opacity-90 text-white rounded-lg font-medium transition-all disabled:opacity-50 flex items-center gap-2"
                         >
                             {isSaving ? (
                                 <>

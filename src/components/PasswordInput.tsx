@@ -33,12 +33,12 @@ export default function PasswordInput({
                 required={required}
                 minLength={minLength}
                 id={id}
-                className={`w-full px-4 py-3 pr-12 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)] ${className}`}
+                className={`w-full px-4 py-3 pr-12 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${className}`}
             />
             <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--border)] transition-all duration-200 group"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-border transition-all duration-200 group"
                 tabIndex={-1}
             >
                 {/* Eye icon container with animation */}
@@ -87,7 +87,7 @@ export default function PasswordInput({
                 </div>
 
                 {/* Ripple effect on click */}
-                <span className="absolute inset-0 rounded-lg bg-[var(--primary)]/0 group-active:bg-[var(--primary)]/10 transition-colors duration-150" />
+                <span className="absolute inset-0 rounded-lg bg-primary/0 group-active:bg-primary/10 transition-colors duration-150" />
             </button>
         </div>
     );

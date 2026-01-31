@@ -500,11 +500,11 @@ A reunião teve ${messages.length} mensagens trocadas.
             case 0:
                 return "from-[#6366f1] to-[#8b5cf6]"; // User - purple
             case 1:
-                return "from-[var(--primary)] to-[var(--secondary)]"; // Persona 1 - default
+                return "from-primary to-secondary"; // Persona 1 - default
             case 2:
                 return "from-[#f97316] to-[#ef4444]"; // Persona 2 - orange/red
             default:
-                return "from-[var(--muted)] to-[var(--muted)]";
+                return "from-muted to-muted";
         }
     };
 
@@ -513,30 +513,30 @@ A reunião teve ${messages.length} mensagens trocadas.
             case 0:
                 return "border-[#6366f1]/30";
             case 1:
-                return "border-[var(--primary)]/30";
+                return "border-primary/30";
             case 2:
                 return "border-[#f97316]/30";
             default:
-                return "border-[var(--border)]";
+                return "border-border";
         }
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-[var(--background)] flex flex-col">
+        <div className="fixed inset-0 z-50 bg-background flex flex-col">
             {/* Header */}
-            <header className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--card)]">
+            <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg text-[var(--muted)] hover:text-[var(--foreground)] hover:bg-[var(--background)] transition-colors"
+                        className="p-2 rounded-lg text-muted hover:text-foreground hover:bg-background transition-colors"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </button>
                     <div>
-                        <h1 className="text-lg font-semibold text-[var(--foreground)]">Sala de Reunião</h1>
-                        <p className="text-xs text-[var(--muted-foreground)]">
+                        <h1 className="text-lg font-semibold text-foreground">Sala de Reunião</h1>
+                        <p className="text-xs text-muted-foreground">
                             {debateRounds} {debateRounds === 1 ? "turno" : "turnos"} de debate
                         </p>
                     </div>
@@ -549,22 +549,22 @@ A reunião teve ${messages.length} mensagens trocadas.
                             <span className="text-white font-bold text-sm">{persona1.name.charAt(0)}</span>
                         </div>
                         <div className="text-left">
-                            <p className="text-sm font-medium text-[var(--foreground)]">{persona1.name}</p>
-                            <p className="text-xs text-[var(--muted-foreground)]">
+                            <p className="text-sm font-medium text-foreground">{persona1.name}</p>
+                            <p className="text-xs text-muted-foreground">
                                 {currentTurn === 1 && isLoading && meetingStarted ? "Falando..." : (currentTurn === 1 && !isPaused && meetingStarted ? "Próximo" : "")}
                             </p>
                         </div>
                     </div>
 
-                    <div className="text-[var(--muted)] text-sm">vs</div>
+                    <div className="text-muted text-sm">vs</div>
 
                     <div className="flex items-center gap-2">
                         <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${getSpeakerColor(2)} flex items-center justify-center`}>
                             <span className="text-white font-bold text-sm">{persona2.name.charAt(0)}</span>
                         </div>
                         <div className="text-left">
-                            <p className="text-sm font-medium text-[var(--foreground)]">{persona2.name}</p>
-                            <p className="text-xs text-[var(--muted-foreground)]">
+                            <p className="text-sm font-medium text-foreground">{persona2.name}</p>
+                            <p className="text-xs text-muted-foreground">
                                 {currentTurn === 2 && isLoading && meetingStarted ? "Falando..." : (currentTurn === 2 && !isPaused && meetingStarted ? "Próximo" : "")}
                             </p>
                         </div>
@@ -583,8 +583,8 @@ A reunião teve ${messages.length} mensagens trocadas.
                             <button
                                 onClick={() => setMeetingStatus(isPaused ? "running" : "paused")}
                                 className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${isPaused
-                                    ? "bg-[var(--accent)] text-white"
-                                    : "bg-[var(--background)] text-[var(--foreground)] border border-[var(--border)]"
+                                    ? "bg-accent text-white"
+                                    : "bg-background text-foreground border border-border"
                                     }`}
                             >
                                 {isPaused ? "Retomar" : "Pausar"}
@@ -592,7 +592,7 @@ A reunião teve ${messages.length} mensagens trocadas.
                             <button
                                 onClick={continueDebate}
                                 disabled={isLoading || isPaused}
-                                className="px-4 py-2 text-sm font-medium bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-50 text-white rounded-xl transition-colors flex items-center gap-2"
+                                className="px-4 py-2 text-sm font-medium bg-primary hover:bg-primary-hover disabled:opacity-50 text-white rounded-xl transition-colors flex items-center gap-2"
                             >
                                 {isLoading ? (
                                     <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -624,27 +624,27 @@ A reunião teve ${messages.length} mensagens trocadas.
                             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${getSpeakerColor(1)} flex items-center justify-center`}>
                                 <span className="text-white font-bold text-2xl">{persona1.name.charAt(0)}</span>
                             </div>
-                            <div className="text-3xl text-[var(--muted)]">⚔️</div>
+                            <div className="text-3xl text-muted">⚔️</div>
                             <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${getSpeakerColor(2)} flex items-center justify-center`}>
                                 <span className="text-white font-bold text-2xl">{persona2.name.charAt(0)}</span>
                             </div>
                         </div>
-                        <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-2">
+                        <h2 className="text-2xl font-semibold text-foreground mb-2">
                             {persona1.name} vs {persona2.name}
                         </h2>
-                        <p className="text-[var(--muted-foreground)] max-w-md mb-4">
+                        <p className="text-muted-foreground max-w-md mb-4">
                             Duas perspectivas diferentes vão debater sobre seu desafio.
                             Você pode intervir a qualquer momento.
                         </p>
-                        <div className="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 max-w-lg mb-4">
-                            <p className="text-sm text-[var(--muted-foreground)] mb-1">Tema inicial:</p>
-                            <p className="text-[var(--foreground)]">{initialTopic}</p>
+                        <div className="bg-card border border-border rounded-xl p-4 max-w-lg mb-4">
+                            <p className="text-sm text-muted-foreground mb-1">Tema inicial:</p>
+                            <p className="text-foreground">{initialTopic}</p>
                         </div>
 
                         <button
                             onClick={startMeeting}
                             disabled={isLoading}
-                            className="px-6 py-3 bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-50 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
+                            className="px-6 py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 text-white rounded-xl font-medium transition-colors flex items-center gap-2"
                         >
                             {isLoading ? (
                                 <>
@@ -672,8 +672,8 @@ A reunião teve ${messages.length} mensagens trocadas.
                             >
                                 <div
                                     className={`rounded-2xl px-5 py-4 border ${message.speakerIndex === 0
-                                        ? "bg-[var(--primary)]/10 border-[var(--primary)]/20 max-w-2xl"
-                                        : `bg-[var(--card)] ${getSpeakerBorder(message.speakerIndex)}`
+                                        ? "bg-primary/10 border-primary/20 max-w-2xl"
+                                        : `bg-card ${getSpeakerBorder(message.speakerIndex)}`
                                         }`}
                                 >
                                     <div className="flex items-center gap-2 mb-2">
@@ -682,16 +682,16 @@ A reunião teve ${messages.length} mensagens trocadas.
                                                 {message.speaker.charAt(0)}
                                             </span>
                                         </div>
-                                        <span className="text-sm font-medium text-[var(--foreground)]">
+                                        <span className="text-sm font-medium text-foreground">
                                             {message.speaker}
                                         </span>
                                         {message.speakerIndex === 0 && (
-                                            <span className="text-xs px-2 py-0.5 bg-[var(--primary)]/20 text-[var(--primary)] rounded-full">
+                                            <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full">
                                                 Fundador
                                             </span>
                                         )}
                                     </div>
-                                    <p className="text-sm text-[var(--foreground)] whitespace-pre-wrap leading-relaxed">
+                                    <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
                                         {message.content}
                                     </p>
                                 </div>
@@ -699,7 +699,7 @@ A reunião teve ${messages.length} mensagens trocadas.
                         ))}
                         {thinkingPersona && (
                             <div className="animate-fade-in">
-                                <div className={`rounded-2xl px-5 py-4 border bg-[var(--card)] ${thinkingPersona === persona1.name ? getSpeakerBorder(1) : getSpeakerBorder(2)
+                                <div className={`rounded-2xl px-5 py-4 border bg-card ${thinkingPersona === persona1.name ? getSpeakerBorder(1) : getSpeakerBorder(2)
                                     }`}>
                                     <div className="flex items-center gap-2 mb-2">
                                         <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${thinkingPersona === persona1.name ? getSpeakerColor(1) : getSpeakerColor(2)
@@ -708,15 +708,15 @@ A reunião teve ${messages.length} mensagens trocadas.
                                                 {thinkingPersona.charAt(0)}
                                             </span>
                                         </div>
-                                        <span className="text-sm font-medium text-[var(--foreground)]">
+                                        <span className="text-sm font-medium text-foreground">
                                             {thinkingPersona}
                                         </span>
-                                        <span className="text-xs text-[var(--muted)]">está pensando...</span>
+                                        <span className="text-xs text-muted">está pensando...</span>
                                     </div>
                                     <div className="flex items-center gap-1.5">
-                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--muted)] animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--muted)] animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                                        <div className="w-2.5 h-2.5 rounded-full bg-[var(--muted)] animate-bounce" style={{ animationDelay: "300ms" }}></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: "0ms" }}></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: "150ms" }}></div>
+                                        <div className="w-2.5 h-2.5 rounded-full bg-muted animate-bounce" style={{ animationDelay: "300ms" }}></div>
                                     </div>
                                 </div>
                             </div>
@@ -751,9 +751,9 @@ A reunião teve ${messages.length} mensagens trocadas.
 
             {/* Intervention Input */}
             {meetingStarted && (
-                <footer className="px-6 py-4 border-t border-[var(--border)] bg-[var(--card)]">
+                <footer className="px-6 py-4 border-t border-border bg-card">
                     <form onSubmit={handleIntervention} className="max-w-4xl mx-auto">
-                        <div className="flex items-end gap-3 bg-[var(--background)] rounded-2xl border border-[var(--border)] p-3 focus-within:border-[var(--primary)] transition-colors duration-200">
+                        <div className="flex items-end gap-3 bg-background rounded-2xl border border-border p-3 focus-within:border-primary transition-colors duration-200">
                             <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${getSpeakerColor(0)} flex items-center justify-center flex-shrink-0`}>
                                 <span className="text-white font-bold text-sm">V</span>
                             </div>
@@ -764,18 +764,18 @@ A reunião teve ${messages.length} mensagens trocadas.
                                 onKeyDown={handleKeyDown}
                                 placeholder="Intervenha no debate... (ex: 'E se considerarmos também...' ou 'Discordo desse ponto porque...')"
                                 rows={1}
-                                className="flex-1 bg-transparent text-[var(--foreground)] placeholder-[var(--muted)] resize-none outline-none text-sm leading-relaxed max-h-[120px]"
+                                className="flex-1 bg-transparent text-foreground placeholder-muted resize-none outline-none text-sm leading-relaxed max-h-[120px]"
                                 disabled={isLoading}
                             />
                             <button
                                 type="submit"
                                 disabled={!input.trim() || isLoading}
-                                className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200"
+                                className="px-4 py-2 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200"
                             >
                                 Intervir
                             </button>
                         </div>
-                        <p className="text-center text-xs text-[var(--muted)] mt-2">
+                        <p className="text-center text-xs text-muted mt-2">
                             Sua intervenção será considerada pela próxima persona a falar
                         </p>
                     </form>
@@ -784,7 +784,7 @@ A reunião teve ${messages.length} mensagens trocadas.
 
             {/* Meeting Ended State */}
             {meetingStatus === "ended" && (
-                <footer className="px-6 py-4 border-t border-[var(--border)] bg-[var(--card)]">
+                <footer className="px-6 py-4 border-t border-border bg-card">
                     <div className="max-w-4xl mx-auto text-center">
                         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 mb-3">
                             <div className="flex items-center justify-center gap-2 mb-2">
@@ -799,7 +799,7 @@ A reunião teve ${messages.length} mensagens trocadas.
                         </div>
                         <button
                             onClick={onClose}
-                            className="px-6 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white rounded-xl font-medium text-sm transition-colors"
+                            className="px-6 py-2 bg-primary hover:bg-primary-hover text-white rounded-xl font-medium text-sm transition-colors"
                         >
                             Fechar Reunião
                         </button>
@@ -810,40 +810,40 @@ A reunião teve ${messages.length} mensagens trocadas.
             {/* End Confirmation Modal */}
             {showEndConfirm && (
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-[var(--card)] rounded-2xl border border-[var(--border)] max-w-md w-full p-6 shadow-2xl">
+                    <div className="bg-card rounded-2xl border border-border max-w-md w-full p-6 shadow-2xl">
                         <div className="text-center mb-6">
                             <div className="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mx-auto mb-4">
                                 <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                                 </svg>
                             </div>
-                            <h3 className="text-xl font-semibold text-[var(--foreground)] mb-2">
+                            <h3 className="text-xl font-semibold text-foreground mb-2">
                                 Encerrar Reunião?
                             </h3>
-                            <p className="text-[var(--muted-foreground)] text-sm">
+                            <p className="text-muted-foreground text-sm">
                                 A reunião será finalizada e você não poderá mais interagir com as personas nesta sessão.
                             </p>
                         </div>
 
                         {/* Meeting Summary */}
-                        <div className="bg-[var(--background)] rounded-xl p-4 mb-6">
-                            <p className="text-xs text-[var(--muted)] mb-2">Resumo da reunião</p>
+                        <div className="bg-background rounded-xl p-4 mb-6">
+                            <p className="text-xs text-muted mb-2">Resumo da reunião</p>
                             <div className="grid grid-cols-2 gap-3 text-sm">
                                 <div>
-                                    <p className="text-[var(--muted-foreground)]">Turnos</p>
-                                    <p className="font-medium text-[var(--foreground)]">{debateRounds}</p>
+                                    <p className="text-muted-foreground">Turnos</p>
+                                    <p className="font-medium text-foreground">{debateRounds}</p>
                                 </div>
                                 <div>
-                                    <p className="text-[var(--muted-foreground)]">Mensagens</p>
-                                    <p className="font-medium text-[var(--foreground)]">{messages.length}</p>
+                                    <p className="text-muted-foreground">Mensagens</p>
+                                    <p className="font-medium text-foreground">{messages.length}</p>
                                 </div>
                                 <div>
-                                    <p className="text-[var(--muted-foreground)]">Personas</p>
-                                    <p className="font-medium text-[var(--foreground)]">{persona1.name}, {persona2.name}</p>
+                                    <p className="text-muted-foreground">Personas</p>
+                                    <p className="font-medium text-foreground">{persona1.name}, {persona2.name}</p>
                                 </div>
                                 <div>
-                                    <p className="text-[var(--muted-foreground)]">Duração</p>
-                                    <p className="font-medium text-[var(--foreground)]">
+                                    <p className="text-muted-foreground">Duração</p>
+                                    <p className="font-medium text-foreground">
                                         {messages.length > 0
                                             ? `${Math.round((new Date().getTime() - new Date(messages[0].timestamp).getTime()) / 60000)} min`
                                             : "0 min"
@@ -857,7 +857,7 @@ A reunião teve ${messages.length} mensagens trocadas.
                             <button
                                 onClick={() => setShowEndConfirm(false)}
                                 disabled={isGeneratingSummary}
-                                className="flex-1 px-4 py-2.5 bg-[var(--background)] hover:bg-[var(--border)] text-[var(--foreground)] border border-[var(--border)] rounded-xl font-medium text-sm transition-colors disabled:opacity-50"
+                                className="flex-1 px-4 py-2.5 bg-background hover:bg-border text-foreground border border-border rounded-xl font-medium text-sm transition-colors disabled:opacity-50"
                             >
                                 Continuar Reunião
                             </button>

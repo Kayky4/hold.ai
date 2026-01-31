@@ -97,7 +97,7 @@ export default function AuthPage() {
     };
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex relative">
+        <div className="min-h-screen bg-background flex relative">
             {/* Theme Toggle */}
             <div className="absolute top-4 right-4 z-50">
                 <ThemeToggle />
@@ -167,17 +167,17 @@ export default function AuthPage() {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <h1 className="text-2xl font-bold text-[var(--foreground)]">Hold.ai</h1>
+                        <h1 className="text-2xl font-bold text-foreground">Hold.ai</h1>
                     </div>
 
                     {/* Form Header */}
                     <div className="text-center mb-8">
-                        <h2 className="text-2xl font-bold text-[var(--foreground)]">
+                        <h2 className="text-2xl font-bold text-foreground">
                             {mode === "login" && "Bem-vindo de volta"}
                             {mode === "signup" && "Crie sua conta"}
                             {mode === "reset" && "Recuperar senha"}
                         </h2>
-                        <p className="text-[var(--muted-foreground)] mt-2">
+                        <p className="text-muted-foreground mt-2">
                             {mode === "login" && "Entre para continuar tomando decisões melhores"}
                             {mode === "signup" && "Comece a usar sua mesa de advisors virtuais"}
                             {mode === "reset" && "Enviaremos um link para redefinir sua senha"}
@@ -203,7 +203,7 @@ export default function AuthPage() {
                         <button
                             onClick={handleGoogleSignIn}
                             disabled={loading}
-                            className="w-full px-4 py-3 bg-[var(--card)] hover:bg-[var(--border)] border border-[var(--border)] rounded-xl font-medium text-[var(--foreground)] transition-all flex items-center justify-center gap-3 disabled:opacity-50 mb-6"
+                            className="w-full px-4 py-3 bg-card hover:bg-border border border-border rounded-xl font-medium text-foreground transition-all flex items-center justify-center gap-3 disabled:opacity-50 mb-6"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -218,9 +218,9 @@ export default function AuthPage() {
                     {/* Divider */}
                     {mode !== "reset" && (
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="flex-1 h-px bg-[var(--border)]" />
-                            <span className="text-sm text-[var(--muted)]">ou</span>
-                            <div className="flex-1 h-px bg-[var(--border)]" />
+                            <div className="flex-1 h-px bg-border" />
+                            <span className="text-sm text-muted">ou</span>
+                            <div className="flex-1 h-px bg-border" />
                         </div>
                     )}
 
@@ -228,7 +228,7 @@ export default function AuthPage() {
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {mode === "signup" && (
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Nome
                                 </label>
                                 <input
@@ -237,13 +237,13 @@ export default function AuthPage() {
                                     onChange={(e) => setDisplayName(e.target.value)}
                                     placeholder="Seu nome"
                                     required
-                                    className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                    className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                                 />
                             </div>
                         )}
 
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Email
                             </label>
                             <input
@@ -252,13 +252,13 @@ export default function AuthPage() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="seu@email.com"
                                 required
-                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                         </div>
 
                         {mode !== "reset" && (
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Senha
                                 </label>
                                 <PasswordInput
@@ -272,7 +272,7 @@ export default function AuthPage() {
 
                         {mode === "signup" && (
                             <div>
-                                <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <label className="block text-sm font-medium text-foreground mb-2">
                                     Confirmar Senha
                                 </label>
                                 <PasswordInput
@@ -294,7 +294,7 @@ export default function AuthPage() {
                                         setError(null);
                                         setResetSent(false);
                                     }}
-                                    className="text-sm text-[var(--primary)] hover:underline"
+                                    className="text-sm text-primary hover:underline"
                                 >
                                     Esqueceu a senha?
                                 </button>
@@ -324,35 +324,35 @@ export default function AuthPage() {
                     {/* Switch Mode */}
                     <div className="mt-6 text-center">
                         {mode === "login" && (
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 Não tem uma conta?{" "}
                                 <button
                                     onClick={() => {
                                         setMode("signup");
                                         setError(null);
                                     }}
-                                    className="text-[var(--primary)] hover:underline font-medium"
+                                    className="text-primary hover:underline font-medium"
                                 >
                                     Criar conta
                                 </button>
                             </p>
                         )}
                         {mode === "signup" && (
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 Já tem uma conta?{" "}
                                 <button
                                     onClick={() => {
                                         setMode("login");
                                         setError(null);
                                     }}
-                                    className="text-[var(--primary)] hover:underline font-medium"
+                                    className="text-primary hover:underline font-medium"
                                 >
                                     Entrar
                                 </button>
                             </p>
                         )}
                         {mode === "reset" && (
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 Lembrou a senha?{" "}
                                 <button
                                     onClick={() => {
@@ -360,7 +360,7 @@ export default function AuthPage() {
                                         setError(null);
                                         setResetSent(false);
                                     }}
-                                    className="text-[var(--primary)] hover:underline font-medium"
+                                    className="text-primary hover:underline font-medium"
                                 >
                                     Voltar ao login
                                 </button>

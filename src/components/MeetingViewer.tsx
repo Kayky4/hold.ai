@@ -30,7 +30,7 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
             case 2:
                 return "border-orange-500/20";
             default:
-                return "border-[var(--border)]";
+                return "border-border";
         }
     };
 
@@ -55,14 +55,14 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
     return (
         <div className="flex flex-col h-full">
             {/* Header */}
-            <header className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-[var(--card)]">
+            <header className="flex items-center justify-between px-6 py-4 border-b border-border bg-card">
                 <div className="flex items-center gap-4">
                     {/* Back button */}
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-[var(--background)] transition-colors"
+                        className="p-2 rounded-lg hover:bg-background transition-colors"
                     >
-                        <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                         </svg>
                     </button>
@@ -75,8 +75,8 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
                             </svg>
                         </div>
                         <div>
-                            <h2 className="text-sm font-semibold text-[var(--foreground)]">{meeting.title}</h2>
-                            <p className="text-xs text-[var(--muted-foreground)]">
+                            <h2 className="text-sm font-semibold text-foreground">{meeting.title}</h2>
+                            <p className="text-xs text-muted-foreground">
                                 Reunião encerrada • {formatDate(meeting.createdAt)}
                             </p>
                         </div>
@@ -85,46 +85,46 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
 
                 {/* Stats */}
                 <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--background)] rounded-lg">
-                        <span className="text-xs text-[var(--muted-foreground)]">Turnos:</span>
-                        <span className="text-sm font-medium text-[var(--foreground)]">{meeting.rounds}</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg">
+                        <span className="text-xs text-muted-foreground">Turnos:</span>
+                        <span className="text-sm font-medium text-foreground">{meeting.rounds}</span>
                     </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--background)] rounded-lg">
-                        <span className="text-xs text-[var(--muted-foreground)]">Mensagens:</span>
-                        <span className="text-sm font-medium text-[var(--foreground)]">{meeting.messages.length}</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg">
+                        <span className="text-xs text-muted-foreground">Mensagens:</span>
+                        <span className="text-sm font-medium text-foreground">{meeting.messages.length}</span>
                     </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--background)] rounded-lg">
-                        <span className="text-xs text-[var(--muted-foreground)]">Duração:</span>
-                        <span className="text-sm font-medium text-[var(--foreground)]">{getDuration()}</span>
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-background rounded-lg">
+                        <span className="text-xs text-muted-foreground">Duração:</span>
+                        <span className="text-sm font-medium text-foreground">{getDuration()}</span>
                     </div>
                 </div>
             </header>
 
             {/* Topic Banner */}
-            <div className="px-6 py-4 bg-gradient-to-r from-[var(--primary)]/5 to-[var(--secondary)]/5 border-b border-[var(--border)]">
+            <div className="px-6 py-4 bg-gradient-to-r from-primary/5 to-secondary/5 border-b border-border">
                 <div className="flex items-center gap-2 mb-1">
-                    <svg className="w-4 h-4 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                     </svg>
-                    <span className="text-xs font-medium text-[var(--muted-foreground)]">Tema da reunião</span>
+                    <span className="text-xs font-medium text-muted-foreground">Tema da reunião</span>
                 </div>
-                <p className="text-sm text-[var(--foreground)]">{meeting.topic}</p>
+                <p className="text-sm text-foreground">{meeting.topic}</p>
             </div>
 
             {/* Personas */}
-            <div className="px-6 py-3 border-b border-[var(--border)] flex items-center justify-center gap-6">
+            <div className="px-6 py-3 border-b border-border flex items-center justify-center gap-6">
                 <div className="flex items-center gap-2">
                     <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${getSpeakerColor(1)} flex items-center justify-center`}>
                         <span className="text-white font-bold text-xs">{meeting.persona1Name.charAt(0)}</span>
                     </div>
-                    <span className="text-sm font-medium text-[var(--foreground)]">{meeting.persona1Name}</span>
+                    <span className="text-sm font-medium text-foreground">{meeting.persona1Name}</span>
                 </div>
-                <span className="text-[var(--muted)]">vs</span>
+                <span className="text-muted">vs</span>
                 <div className="flex items-center gap-2">
                     <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${getSpeakerColor(2)} flex items-center justify-center`}>
                         <span className="text-white font-bold text-xs">{meeting.persona2Name.charAt(0)}</span>
                     </div>
-                    <span className="text-sm font-medium text-[var(--foreground)]">{meeting.persona2Name}</span>
+                    <span className="text-sm font-medium text-foreground">{meeting.persona2Name}</span>
                 </div>
             </div>
 
@@ -133,21 +133,21 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
                 <div className="max-w-4xl mx-auto space-y-4">
                     {meeting.messages.map((message) => (
                         <div key={message.id} className="animate-fade-in">
-                            <div className={`rounded-2xl px-5 py-4 border bg-[var(--card)] ${getSpeakerBorder(message.speakerIndex)}`}>
+                            <div className={`rounded-2xl px-5 py-4 border bg-card ${getSpeakerBorder(message.speakerIndex)}`}>
                                 <div className="flex items-center gap-2 mb-2">
                                     <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${getSpeakerColor(message.speakerIndex)} flex items-center justify-center`}>
                                         <span className="text-white font-bold text-xs">
                                             {message.speaker.charAt(0)}
                                         </span>
                                     </div>
-                                    <span className="text-sm font-medium text-[var(--foreground)]">
+                                    <span className="text-sm font-medium text-foreground">
                                         {message.speaker}
                                     </span>
-                                    <span className="text-xs text-[var(--muted)]">
+                                    <span className="text-xs text-muted">
                                         {new Date(message.timestamp).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                                     </span>
                                 </div>
-                                <div className="text-sm text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
+                                <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                                     {message.content}
                                 </div>
                             </div>
@@ -157,7 +157,7 @@ export default function MeetingViewer({ meeting, onClose }: MeetingViewerProps) 
             </main>
 
             {/* Footer */}
-            <footer className="px-6 py-4 border-t border-[var(--border)] bg-[var(--card)]">
+            <footer className="px-6 py-4 border-t border-border bg-card">
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4 flex items-center justify-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">

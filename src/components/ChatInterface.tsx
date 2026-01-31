@@ -327,7 +327,7 @@ export default function ChatInterface() {
     }
 
     return (
-        <div className="flex h-screen bg-[var(--background)]">
+        <div className="flex h-screen bg-background">
             {/* Sidebar */}
             <Sidebar
                 conversations={conversations}
@@ -358,26 +358,26 @@ export default function ChatInterface() {
                 /* Main Chat Area */
                 <div className="flex-1 flex flex-col">
                     {/* Header */}
-                    <header className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+                    <header className="flex items-center justify-between px-6 py-4 border-b border-border">
                         <button
                             onClick={() => setShowPersonaManager(true)}
-                            className="flex items-center gap-3 hover:bg-[var(--card)] p-2 pr-4 rounded-xl transition-colors duration-200"
+                            className="flex items-center gap-3 hover:bg-card p-2 pr-4 rounded-xl transition-colors duration-200"
                         >
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                                 <span className="text-white font-bold text-sm">{currentPersonaInitial}</span>
                             </div>
                             <div className="text-left">
-                                <h2 className="text-sm font-semibold text-[var(--foreground)]">{currentPersonaName}</h2>
-                                <p className="text-xs text-[var(--muted-foreground)]">{currentPersonaDescription}</p>
+                                <h2 className="text-sm font-semibold text-foreground">{currentPersonaName}</h2>
+                                <p className="text-xs text-muted-foreground">{currentPersonaDescription}</p>
                             </div>
-                            <svg className="w-4 h-4 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
                         <div className="flex items-center gap-3">
                             {isSaving && (
-                                <div className="flex items-center gap-2 text-xs text-[var(--muted-foreground)]">
-                                    <div className="w-3 h-3 border-2 border-[var(--muted)] border-t-[var(--primary)] rounded-full animate-spin"></div>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                    <div className="w-3 h-3 border-2 border-muted border-t-primary rounded-full animate-spin"></div>
                                     Salvando...
                                 </div>
                             )}
@@ -404,13 +404,13 @@ export default function ChatInterface() {
                     <main className="flex-1 overflow-y-auto px-6 py-6">
                         {messages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-full text-center">
-                                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center mb-6">
+                                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6">
                                     <span className="text-white font-bold text-3xl">{currentPersonaInitial}</span>
                                 </div>
-                                <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-2">
+                                <h2 className="text-2xl font-semibold text-foreground mb-2">
                                     Olá! Sou {currentPersonaName}
                                 </h2>
-                                <p className="text-[var(--muted-foreground)] max-w-md mb-8">
+                                <p className="text-muted-foreground max-w-md mb-8">
                                     Estou aqui para ajudar você a tomar decisões melhores sobre seu SaaS.
                                     Compartilhe o que está pensando, qual desafio está enfrentando, ou
                                     sobre o que precisa de clareza.
@@ -424,7 +424,7 @@ export default function ChatInterface() {
                                         <button
                                             key={index}
                                             onClick={() => setInput(suggestion)}
-                                            className="px-4 py-2 text-sm rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] hover:border-[var(--border-hover)] hover:text-[var(--foreground)] transition-all duration-200"
+                                            className="px-4 py-2 text-sm rounded-lg border border-border text-muted-foreground hover:border-border-hover hover:text-foreground transition-all duration-200"
                                         >
                                             {suggestion}
                                         </button>
@@ -440,16 +440,16 @@ export default function ChatInterface() {
                                     >
                                         <div
                                             className={`max-w-[80%] ${message.role === "user"
-                                                ? "bg-[var(--primary)] text-white rounded-2xl rounded-br-md px-4 py-3"
-                                                : "bg-[var(--card)] text-[var(--foreground)] rounded-2xl rounded-bl-md px-4 py-3 border border-[var(--border)]"
+                                                ? "bg-primary text-white rounded-2xl rounded-br-md px-4 py-3"
+                                                : "bg-card text-foreground rounded-2xl rounded-bl-md px-4 py-3 border border-border"
                                                 }`}
                                         >
                                             {message.role === "assistant" && (
-                                                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[var(--border)]">
-                                                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
+                                                <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border">
+                                                    <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                                                         <span className="text-white font-bold text-xs">{currentPersonaInitial}</span>
                                                     </div>
-                                                    <span className="text-xs font-medium text-[var(--muted-foreground)]">
+                                                    <span className="text-xs font-medium text-muted-foreground">
                                                         {currentPersonaName}
                                                     </span>
                                                 </div>
@@ -462,19 +462,19 @@ export default function ChatInterface() {
                                 ))}
                                 {isLoading && (
                                     <div className="flex justify-start animate-fade-in">
-                                        <div className="bg-[var(--card)] text-[var(--foreground)] rounded-2xl rounded-bl-md px-4 py-3 border border-[var(--border)]">
-                                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[var(--border)]">
-                                                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] flex items-center justify-center">
+                                        <div className="bg-card text-foreground rounded-2xl rounded-bl-md px-4 py-3 border border-border">
+                                            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-border">
+                                                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                                                     <span className="text-white font-bold text-xs">{currentPersonaInitial}</span>
                                                 </div>
-                                                <span className="text-xs font-medium text-[var(--muted-foreground)]">
+                                                <span className="text-xs font-medium text-muted-foreground">
                                                     {currentPersonaName}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-1">
-                                                <div className="w-2 h-2 rounded-full bg-[var(--muted)] animate-pulse-slow"></div>
-                                                <div className="w-2 h-2 rounded-full bg-[var(--muted)] animate-pulse-slow" style={{ animationDelay: "0.2s" }}></div>
-                                                <div className="w-2 h-2 rounded-full bg-[var(--muted)] animate-pulse-slow" style={{ animationDelay: "0.4s" }}></div>
+                                                <div className="w-2 h-2 rounded-full bg-muted animate-pulse-slow"></div>
+                                                <div className="w-2 h-2 rounded-full bg-muted animate-pulse-slow" style={{ animationDelay: "0.2s" }}></div>
+                                                <div className="w-2 h-2 rounded-full bg-muted animate-pulse-slow" style={{ animationDelay: "0.4s" }}></div>
                                             </div>
                                         </div>
                                     </div>
@@ -485,9 +485,9 @@ export default function ChatInterface() {
                     </main>
 
                     {/* Input Area */}
-                    <footer className="px-6 py-4 border-t border-[var(--border)]">
+                    <footer className="px-6 py-4 border-t border-border">
                         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-                            <div className="flex items-end gap-3 bg-[var(--card)] rounded-2xl border border-[var(--border)] p-3 focus-within:border-[var(--primary)] transition-colors duration-200">
+                            <div className="flex items-end gap-3 bg-card rounded-2xl border border-border p-3 focus-within:border-primary transition-colors duration-200">
                                 <textarea
                                     ref={textareaRef}
                                     value={input}
@@ -495,13 +495,13 @@ export default function ChatInterface() {
                                     onKeyDown={handleKeyDown}
                                     placeholder="Compartilhe sua ideia, desafio ou dúvida..."
                                     rows={1}
-                                    className="flex-1 bg-transparent text-[var(--foreground)] placeholder-[var(--muted)] resize-none outline-none text-sm leading-relaxed max-h-[200px]"
+                                    className="flex-1 bg-transparent text-foreground placeholder-muted resize-none outline-none text-sm leading-relaxed max-h-[200px]"
                                     disabled={isLoading}
                                 />
                                 <button
                                     type="submit"
                                     disabled={!input.trim() || isLoading}
-                                    className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200 flex items-center gap-2"
+                                    className="px-4 py-2 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl font-medium text-sm transition-all duration-200 flex items-center gap-2"
                                 >
                                     {isLoading ? (
                                         <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -525,7 +525,7 @@ export default function ChatInterface() {
                                     )}
                                 </button>
                             </div>
-                            <p className="text-center text-xs text-[var(--muted)] mt-3">
+                            <p className="text-center text-xs text-muted mt-3">
                                 Pressione Enter para enviar, Shift+Enter para nova linha
                             </p>
                         </form>

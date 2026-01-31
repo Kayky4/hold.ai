@@ -185,9 +185,9 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-scale-in">
+            <div className="bg-card rounded-2xl shadow-2xl border border-border w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-scale-in">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,19 +195,19 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                             </svg>
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-[var(--foreground)]">
+                            <h2 className="text-lg font-semibold text-foreground">
                                 Editar Perfil
                             </h2>
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 Atualize suas informações
                             </p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-[var(--border)] rounded-lg transition-colors"
+                        className="p-2 hover:bg-border rounded-lg transition-colors"
                     >
-                        <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -216,7 +216,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-6">
                     {/* Avatar & Email */}
-                    <div className="flex items-center gap-4 p-4 bg-[var(--background)] rounded-xl">
+                    <div className="flex items-center gap-4 p-4 bg-background rounded-xl">
                         {user?.photoURL ? (
                             <img
                                 src={user.photoURL}
@@ -231,8 +231,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                             </div>
                         )}
                         <div className="flex-1">
-                            <p className="font-medium text-[var(--foreground)]">{displayName || "Usuário"}</p>
-                            <p className="text-sm text-[var(--muted-foreground)]">{user?.email}</p>
+                            <p className="font-medium text-foreground">{displayName || "Usuário"}</p>
+                            <p className="text-sm text-muted-foreground">{user?.email}</p>
                             <div className="flex items-center gap-2 mt-1">
                                 {userHasGoogle && (
                                     <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs bg-blue-500/10 text-blue-500 rounded-full">
@@ -275,7 +275,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                     <div className="space-y-4">
                         {/* Name */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Nome *
                             </label>
                             <input
@@ -283,13 +283,13 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="Seu nome"
-                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                         </div>
 
                         {/* Company */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Empresa ou Projeto
                             </label>
                             <input
@@ -297,13 +297,13 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                 value={company}
                                 onChange={(e) => setCompany(e.target.value)}
                                 placeholder="Nome da sua startup ou empresa"
-                                className="w-full px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/50 focus:border-[var(--primary)]"
+                                className="w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                             />
                         </div>
 
                         {/* Role */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Seu papel
                             </label>
                             <div className="grid grid-cols-2 gap-2">
@@ -313,8 +313,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                         type="button"
                                         onClick={() => setRole(r.value)}
                                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${role === r.value
-                                                ? "bg-[var(--primary)] text-white"
-                                                : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                                ? "bg-primary text-white"
+                                                : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {r.label}
@@ -325,7 +325,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
                         {/* Project Type */}
                         <div>
-                            <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                            <label className="block text-sm font-medium text-foreground mb-2">
                                 Tipo de projeto
                             </label>
                             <div className="grid grid-cols-2 gap-2">
@@ -335,8 +335,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                         type="button"
                                         onClick={() => setProjectType(t.value)}
                                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${projectType === t.value
-                                                ? "bg-[var(--primary)] text-white"
-                                                : "bg-[var(--background)] border border-[var(--border)] text-[var(--foreground)] hover:bg-[var(--border)]"
+                                                ? "bg-primary text-white"
+                                                : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {t.label}
@@ -347,8 +347,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                     </div>
 
                     {/* Account Linking Section */}
-                    <div className="pt-4 border-t border-[var(--border)]">
-                        <h3 className="text-sm font-medium text-[var(--foreground)] mb-3 flex items-center gap-2">
+                    <div className="pt-4 border-t border-border">
+                        <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
                             </svg>
@@ -358,7 +358,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                         <div className="space-y-3">
                             {/* Google Link Status */}
                             {userHasGoogle ? (
-                                <div className="flex items-center justify-between p-3 bg-[var(--background)] rounded-xl">
+                                <div className="flex items-center justify-between p-3 bg-background rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm">
                                             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -369,8 +369,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                             </svg>
                                         </div>
                                         <div>
-                                            <p className="text-sm font-medium text-[var(--foreground)]">Google</p>
-                                            <p className="text-xs text-[var(--muted)]">Vinculado</p>
+                                            <p className="text-sm font-medium text-foreground">Google</p>
+                                            <p className="text-xs text-muted">Vinculado</p>
                                         </div>
                                     </div>
                                     <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -381,7 +381,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                 <button
                                     onClick={handleLinkGoogle}
                                     disabled={linkingGoogle}
-                                    className="w-full flex items-center justify-between p-3 bg-[var(--background)] hover:bg-[var(--border)] rounded-xl transition-colors disabled:opacity-50"
+                                    className="w-full flex items-center justify-between p-3 bg-background hover:bg-border rounded-xl transition-colors disabled:opacity-50"
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm">
@@ -393,14 +393,14 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                             </svg>
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-sm font-medium text-[var(--foreground)]">Vincular Google</p>
-                                            <p className="text-xs text-[var(--muted)]">Faça login com sua conta Google</p>
+                                            <p className="text-sm font-medium text-foreground">Vincular Google</p>
+                                            <p className="text-xs text-muted">Faça login com sua conta Google</p>
                                         </div>
                                     </div>
                                     {linkingGoogle ? (
-                                        <div className="w-4 h-4 border-2 border-[var(--muted)]/30 border-t-[var(--muted)] rounded-full animate-spin" />
+                                        <div className="w-4 h-4 border-2 border-muted/30 border-t-muted rounded-full animate-spin" />
                                     ) : (
-                                        <svg className="w-5 h-5 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                         </svg>
                                     )}
@@ -409,7 +409,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
                             {/* Password Link Status */}
                             {userHasPassword ? (
-                                <div className="flex items-center justify-between p-3 bg-[var(--background)] rounded-xl">
+                                <div className="flex items-center justify-between p-3 bg-background rounded-xl">
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
                                             <svg className="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -417,8 +417,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                             </svg>
                                         </div>
                                         <div>
-                                            <p className="text-sm font-medium text-[var(--foreground)]">Email e Senha</p>
-                                            <p className="text-xs text-[var(--muted)]">Vinculado</p>
+                                            <p className="text-sm font-medium text-foreground">Email e Senha</p>
+                                            <p className="text-xs text-muted">Vinculado</p>
                                         </div>
                                     </div>
                                     <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -426,9 +426,9 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                     </svg>
                                 </div>
                             ) : showPasswordForm ? (
-                                <div className="p-4 bg-[var(--background)] rounded-xl space-y-3">
+                                <div className="p-4 bg-background rounded-xl space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <p className="text-sm font-medium text-[var(--foreground)]">Criar senha</p>
+                                        <p className="text-sm font-medium text-foreground">Criar senha</p>
                                         <button
                                             onClick={() => {
                                                 setShowPasswordForm(false);
@@ -436,13 +436,13 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                                 setConfirmNewPassword("");
                                                 setError(null);
                                             }}
-                                            className="text-xs text-[var(--muted)] hover:text-[var(--foreground)]"
+                                            className="text-xs text-muted hover:text-foreground"
                                         >
                                             Cancelar
                                         </button>
                                     </div>
                                     <div>
-                                        <label className="block text-xs text-[var(--muted)] mb-1">Nova senha</label>
+                                        <label className="block text-xs text-muted mb-1">Nova senha</label>
                                         <PasswordInput
                                             value={newPassword}
                                             onChange={(e) => setNewPassword(e.target.value)}
@@ -451,7 +451,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs text-[var(--muted)] mb-1">Confirmar senha</label>
+                                        <label className="block text-xs text-muted mb-1">Confirmar senha</label>
                                         <PasswordInput
                                             value={confirmNewPassword}
                                             onChange={(e) => setConfirmNewPassword(e.target.value)}
@@ -461,7 +461,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                     <button
                                         onClick={handleLinkPassword}
                                         disabled={linkingPassword || newPassword.length < 6}
-                                        className="w-full py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                        className="w-full py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                                     >
                                         {linkingPassword ? (
                                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -473,7 +473,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                             ) : (
                                 <button
                                     onClick={() => setShowPasswordForm(true)}
-                                    className="w-full flex items-center justify-between p-3 bg-[var(--background)] hover:bg-[var(--border)] rounded-xl transition-colors"
+                                    className="w-full flex items-center justify-between p-3 bg-background hover:bg-border rounded-xl transition-colors"
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center">
@@ -482,11 +482,11 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                             </svg>
                                         </div>
                                         <div className="text-left">
-                                            <p className="text-sm font-medium text-[var(--foreground)]">Criar senha</p>
-                                            <p className="text-xs text-[var(--muted)]">Faça login com email e senha</p>
+                                            <p className="text-sm font-medium text-foreground">Criar senha</p>
+                                            <p className="text-xs text-muted">Faça login com email e senha</p>
                                         </div>
                                     </div>
-                                    <svg className="w-5 h-5 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                     </svg>
                                 </button>
@@ -496,8 +496,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
                     {/* Password Reset Section - Only show if user has password */}
                     {userHasPassword && (
-                        <div className="pt-4 border-t border-[var(--border)]">
-                            <h3 className="text-sm font-medium text-[var(--foreground)] mb-3">
+                        <div className="pt-4 border-t border-border">
+                            <h3 className="text-sm font-medium text-foreground mb-3">
                                 Segurança
                             </h3>
 
@@ -512,10 +512,10 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                 <button
                                     onClick={handleResetPassword}
                                     disabled={resetPasswordLoading}
-                                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] hover:bg-[var(--border)] transition-colors disabled:opacity-50"
+                                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-background border border-border rounded-xl text-foreground hover:bg-border transition-colors disabled:opacity-50"
                                 >
                                     {resetPasswordLoading ? (
-                                        <div className="w-4 h-4 border-2 border-[var(--muted)]/30 border-t-[var(--muted)] rounded-full animate-spin" />
+                                        <div className="w-4 h-4 border-2 border-muted/30 border-t-muted rounded-full animate-spin" />
                                     ) : (
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -525,7 +525,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                 </button>
                             )}
 
-                            <p className="mt-2 text-xs text-[var(--muted)]">
+                            <p className="mt-2 text-xs text-muted">
                                 Enviaremos um link para {user?.email} para redefinir sua senha.
                             </p>
                         </div>
@@ -533,10 +533,10 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--background)] flex items-center justify-end gap-3">
+                <div className="px-6 py-4 border-t border-border bg-background flex items-center justify-end gap-3">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                        className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                         Cancelar
                     </button>

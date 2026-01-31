@@ -16,12 +16,12 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     // Loading state
     if (loading) {
         return (
-            <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
+            <div className="min-h-screen bg-background flex items-center justify-center">
                 <div className="text-center">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center mx-auto mb-4">
                         <div className="w-8 h-8 border-3 border-white/30 border-t-white rounded-full animate-spin" />
                     </div>
-                    <p className="text-[var(--muted-foreground)]">Carregando...</p>
+                    <p className="text-muted-foreground">Carregando...</p>
                 </div>
             </div>
         );

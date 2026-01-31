@@ -118,9 +118,9 @@ export default function ProjectManager({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="bg-card rounded-2xl shadow-2xl border border-border max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,10 +128,10 @@ export default function ProjectManager({
                             </svg>
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-[var(--foreground)]">
+                            <h2 className="text-lg font-semibold text-foreground">
                                 {editingProjectId ? "Editar Projeto" : "Gerenciar Projetos"}
                             </h2>
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 {editingProjectId
                                     ? "Configure o contexto do seu projeto"
                                     : `${projects.length} projeto${projects.length !== 1 ? "s" : ""} cadastrado${projects.length !== 1 ? "s" : ""}`
@@ -141,9 +141,9 @@ export default function ProjectManager({
                     </div>
                     <button
                         onClick={editingProjectId ? () => setEditingProjectId(null) : onClose}
-                        className="p-2 hover:bg-[var(--border)] rounded-lg transition-colors"
+                        className="p-2 hover:bg-border rounded-lg transition-colors"
                     >
-                        <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             {editingProjectId ? (
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             ) : (
@@ -168,8 +168,8 @@ export default function ProjectManager({
                         <div className="p-6 space-y-4">
                             {/* Create New Project */}
                             {showNewProjectForm ? (
-                                <div className="p-4 bg-[var(--primary)]/10 border border-[var(--primary)]/30 rounded-xl">
-                                    <label className="block text-sm font-medium text-[var(--foreground)] mb-2">
+                                <div className="p-4 bg-primary/10 border border-primary/30 rounded-xl">
+                                    <label className="block text-sm font-medium text-foreground mb-2">
                                         Nome do novo projeto
                                     </label>
                                     <div className="flex gap-2">
@@ -178,7 +178,7 @@ export default function ProjectManager({
                                             value={newProjectName}
                                             onChange={(e) => setNewProjectName(e.target.value)}
                                             placeholder="Ex: Meu App SaaS"
-                                            className="flex-1 px-4 py-2 bg-[var(--background)] border border-[var(--border)] rounded-lg text-[var(--foreground)] placeholder:text-[var(--muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+                                            className="flex-1 px-4 py-2 bg-background border border-border rounded-lg text-foreground placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-primary"
                                             autoFocus
                                             onKeyDown={(e) => {
                                                 if (e.key === "Enter") handleCreateProject();
@@ -188,7 +188,7 @@ export default function ProjectManager({
                                         <button
                                             onClick={handleCreateProject}
                                             disabled={!newProjectName.trim() || creatingProject}
-                                            className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-sm font-medium disabled:opacity-50 transition-colors"
+                                            className="px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium disabled:opacity-50 transition-colors"
                                         >
                                             {creatingProject ? "Criando..." : "Criar"}
                                         </button>
@@ -197,7 +197,7 @@ export default function ProjectManager({
                                                 setShowNewProjectForm(false);
                                                 setNewProjectName("");
                                             }}
-                                            className="px-4 py-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                                            className="px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             Cancelar
                                         </button>
@@ -206,7 +206,7 @@ export default function ProjectManager({
                             ) : (
                                 <button
                                     onClick={() => setShowNewProjectForm(true)}
-                                    className="w-full p-4 border-2 border-dashed border-[var(--border)] hover:border-[var(--primary)] rounded-xl flex items-center justify-center gap-2 text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-all"
+                                    className="w-full p-4 border-2 border-dashed border-border hover:border-primary rounded-xl flex items-center justify-center gap-2 text-muted-foreground hover:text-primary transition-all"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -218,17 +218,17 @@ export default function ProjectManager({
                             {/* Projects List */}
                             {loading ? (
                                 <div className="flex items-center justify-center py-12">
-                                    <div className="w-8 h-8 border-2 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
+                                    <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                                 </div>
                             ) : projects.length === 0 ? (
                                 <div className="text-center py-12">
-                                    <div className="w-16 h-16 rounded-2xl bg-[var(--background)] flex items-center justify-center mx-auto mb-4">
-                                        <svg className="w-8 h-8 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center mx-auto mb-4">
+                                        <svg className="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                         </svg>
                                     </div>
-                                    <p className="text-[var(--foreground)] font-medium">Nenhum projeto ainda</p>
-                                    <p className="text-sm text-[var(--muted-foreground)] mt-1">
+                                    <p className="text-foreground font-medium">Nenhum projeto ainda</p>
+                                    <p className="text-sm text-muted-foreground mt-1">
                                         Crie seu primeiro projeto para dar contexto às suas reuniões
                                     </p>
                                 </div>
@@ -238,8 +238,8 @@ export default function ProjectManager({
                                         <div
                                             key={project.id}
                                             className={`p-4 rounded-xl border transition-all ${currentProject?.id === project.id
-                                                ? "bg-[var(--primary)]/10 border-[var(--primary)]/30"
-                                                : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]/30"
+                                                ? "bg-primary/10 border-primary/30"
+                                                : "bg-background border-border hover:border-primary/30"
                                                 }`}
                                         >
                                             <div className="flex items-start gap-3">
@@ -248,19 +248,19 @@ export default function ProjectManager({
                                                 </div>
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2">
-                                                        <h3 className="font-medium text-[var(--foreground)]">
+                                                        <h3 className="font-medium text-foreground">
                                                             {project.name}
                                                         </h3>
                                                         {currentProject?.id === project.id && (
-                                                            <span className="px-2 py-0.5 text-xs rounded-full bg-[var(--primary)] text-white">
+                                                            <span className="px-2 py-0.5 text-xs rounded-full bg-primary text-white">
                                                                 Ativo
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <p className="text-sm text-[var(--muted-foreground)] truncate mt-0.5">
+                                                    <p className="text-sm text-muted-foreground truncate mt-0.5">
                                                         {project.description || "Sem descrição"}
                                                     </p>
-                                                    <div className="flex items-center gap-4 mt-2 text-xs text-[var(--muted)]">
+                                                    <div className="flex items-center gap-4 mt-2 text-xs text-muted">
                                                         <span>{getStageName(project.currentStage)}</span>
                                                         <span>•</span>
                                                         <span>Criado em {new Date(project.createdAt).toLocaleDateString("pt-BR")}</span>
@@ -274,7 +274,7 @@ export default function ProjectManager({
                                                             onClick={() => {
                                                                 onSelectProject(project);
                                                             }}
-                                                            className="p-2 text-[var(--primary)] hover:bg-[var(--primary)]/10 rounded-lg transition-colors"
+                                                            className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                                                             title="Definir como ativo"
                                                         >
                                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +284,7 @@ export default function ProjectManager({
                                                     )}
                                                     <button
                                                         onClick={() => setEditingProjectId(project.id)}
-                                                        className="p-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--border)] rounded-lg transition-colors"
+                                                        className="p-2 text-muted-foreground hover:text-foreground hover:bg-border rounded-lg transition-colors"
                                                         title="Editar"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,7 +293,7 @@ export default function ProjectManager({
                                                     </button>
                                                     <button
                                                         onClick={() => handleDeleteProject(project.id)}
-                                                        className="p-2 text-[var(--muted)] hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                        className="p-2 text-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
                                                         title="Excluir"
                                                     >
                                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,8 +312,8 @@ export default function ProjectManager({
 
                 {/* Footer */}
                 {!editingProjectId && (
-                    <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]">
-                        <p className="text-xs text-[var(--muted)] text-center">
+                    <div className="px-6 py-4 border-t border-border bg-background">
+                        <p className="text-xs text-muted text-center">
                             💡 O contexto do projeto é injetado em todas as conversas e reuniões
                         </p>
                     </div>

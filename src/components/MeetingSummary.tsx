@@ -90,9 +90,9 @@ export default function MeetingSummary({
     if (isLoading) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] max-w-2xl w-full overflow-hidden">
+                <div className="bg-card rounded-2xl shadow-2xl border border-border max-w-2xl w-full overflow-hidden">
                     {/* Header */}
-                    <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-gradient-to-r from-emerald-500/10 to-teal-500/10">
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-gradient-to-r from-emerald-500/10 to-teal-500/10">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center animate-pulse">
                                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,8 +100,8 @@ export default function MeetingSummary({
                                 </svg>
                             </div>
                             <div>
-                                <h2 className="text-lg font-semibold text-[var(--foreground)]">Resumo Executivo</h2>
-                                <p className="text-sm text-[var(--muted-foreground)]">
+                                <h2 className="text-lg font-semibold text-foreground">Resumo Executivo</h2>
+                                <p className="text-sm text-muted-foreground">
                                     {messageCount} mensagens • {personas.join(" vs ")}
                                 </p>
                             </div>
@@ -117,29 +117,29 @@ export default function MeetingSummary({
                             <div className="absolute inset-2 w-12 h-12 rounded-full border-4 border-transparent border-t-teal-400 animate-spin" style={{ animationDirection: "reverse", animationDuration: "0.8s" }}></div>
                         </div>
 
-                        <h3 className="text-lg font-semibold text-[var(--foreground)] mb-2">
+                        <h3 className="text-lg font-semibold text-foreground mb-2">
                             Gerando Resumo Executivo...
                         </h3>
-                        <p className="text-sm text-[var(--muted-foreground)] text-center max-w-sm mb-4">
+                        <p className="text-sm text-muted-foreground text-center max-w-sm mb-4">
                             Analisando {messageCount} mensagens e estruturando com o framework HOLD
                         </p>
 
                         {/* Progress steps */}
-                        <div className="flex items-center gap-2 text-xs text-[var(--muted-foreground)]">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <span className="flex items-center gap-1">
                                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                                 Processando
                             </span>
-                            <span className="text-[var(--border)]">→</span>
+                            <span className="text-border">→</span>
                             <span className="opacity-50">Estruturando</span>
-                            <span className="text-[var(--border)]">→</span>
+                            <span className="text-border">→</span>
                             <span className="opacity-50">Extraindo decisões</span>
                         </div>
                     </div>
 
                     {/* Footer */}
-                    <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]">
-                        <p className="text-xs text-[var(--muted)] text-center">
+                    <div className="px-6 py-4 border-t border-border bg-background">
+                        <p className="text-xs text-muted text-center">
                             💡 Isso pode levar alguns segundos dependendo da complexidade da reunião
                         </p>
                     </div>
@@ -150,9 +150,9 @@ export default function MeetingSummary({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="bg-card rounded-2xl shadow-2xl border border-border max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] bg-gradient-to-r from-emerald-500/10 to-teal-500/10">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-gradient-to-r from-emerald-500/10 to-teal-500/10">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -160,17 +160,17 @@ export default function MeetingSummary({
                             </svg>
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-[var(--foreground)]">Resumo Executivo</h2>
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <h2 className="text-lg font-semibold text-foreground">Resumo Executivo</h2>
+                            <p className="text-sm text-muted-foreground">
                                 {messageCount} mensagens • {personas.join(" vs ")}
                             </p>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-[var(--background)] transition-colors"
+                        className="p-2 rounded-lg hover:bg-background transition-colors"
                     >
-                        <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
@@ -181,15 +181,15 @@ export default function MeetingSummary({
                     {/* Summary */}
                     <div className="prose prose-sm dark:prose-invert max-w-none">
                         <div
-                            className="text-[var(--foreground)] leading-relaxed"
+                            className="text-foreground leading-relaxed"
                             dangerouslySetInnerHTML={{
                                 __html: (summary || "")
-                                    .replace(/^### /gm, '<h3 class="text-lg font-semibold mt-6 mb-2 text-[var(--foreground)]">')
-                                    .replace(/^## /gm, '<h2 class="text-xl font-bold mt-6 mb-3 text-[var(--foreground)]">')
-                                    .replace(/^# /gm, '<h1 class="text-2xl font-bold mt-6 mb-4 text-[var(--foreground)]">')
+                                    .replace(/^### /gm, '<h3 class="text-lg font-semibold mt-6 mb-2 text-foreground">')
+                                    .replace(/^## /gm, '<h2 class="text-xl font-bold mt-6 mb-3 text-foreground">')
+                                    .replace(/^# /gm, '<h1 class="text-2xl font-bold mt-6 mb-4 text-foreground">')
                                     .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
                                     .replace(/\*([^*]+)\*/g, '<em>$1</em>')
-                                    .replace(/^- /gm, '<li class="ml-4 text-[var(--foreground)]">')
+                                    .replace(/^- /gm, '<li class="ml-4 text-foreground">')
                                     .replace(/\n\n/g, '</p><p class="mt-3">')
                                     .replace(/\n/g, '<br/>')
                             }}
@@ -198,13 +198,13 @@ export default function MeetingSummary({
 
                     {/* Decisions Section */}
                     {decisions.length > 0 && (
-                        <div className="mt-8 p-4 bg-[var(--background)] rounded-xl border border-[var(--border)]">
+                        <div className="mt-8 p-4 bg-background rounded-xl border border-border">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-2">
                                     <svg className="w-5 h-5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                     </svg>
-                                    <h3 className="font-semibold text-[var(--foreground)]">
+                                    <h3 className="font-semibold text-foreground">
                                         {decisions.length} {decisions.length === 1 ? "Decisão Identificada" : "Decisões Identificadas"}
                                     </h3>
                                 </div>
@@ -240,7 +240,7 @@ export default function MeetingSummary({
                             </div>
                             <div className="space-y-2">
                                 {decisions.map((d, i) => (
-                                    <div key={i} className="flex items-start gap-3 p-3 bg-[var(--card)] rounded-lg border border-[var(--border)]">
+                                    <div key={i} className="flex items-start gap-3 p-3 bg-card rounded-lg border border-border">
                                         <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${d.status === "taken"
                                             ? "bg-emerald-500/20 text-emerald-500"
                                             : "bg-amber-500/20 text-amber-500"
@@ -256,9 +256,9 @@ export default function MeetingSummary({
                                             )}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-[var(--foreground)]">{d.decision}</p>
+                                            <p className="text-sm font-medium text-foreground">{d.decision}</p>
                                             {d.context && (
-                                                <p className="text-xs text-[var(--muted-foreground)] mt-1">{d.context}</p>
+                                                <p className="text-xs text-muted-foreground mt-1">{d.context}</p>
                                             )}
                                         </div>
                                         <span className={`text-xs px-2 py-0.5 rounded-full ${d.status === "taken"
@@ -275,14 +275,14 @@ export default function MeetingSummary({
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]">
-                    <p className="text-xs text-[var(--muted)]">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-border bg-background">
+                    <p className="text-xs text-muted">
                         💡 Este resumo foi gerado usando o framework HOLD
                     </p>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleCopy}
-                            className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] hover:bg-[var(--border)] border border-[var(--border)] rounded-lg text-sm text-[var(--foreground)] transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-border border border-border rounded-lg text-sm text-foreground transition-colors"
                         >
                             {copied ? (
                                 <>
@@ -302,7 +302,7 @@ export default function MeetingSummary({
                         </button>
                         <button
                             onClick={handleExportMarkdown}
-                            className="flex items-center gap-2 px-4 py-2 bg-[var(--card)] hover:bg-[var(--border)] border border-[var(--border)] rounded-lg text-sm text-[var(--foreground)] transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-card hover:bg-border border border-border rounded-lg text-sm text-foreground transition-colors"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -311,7 +311,7 @@ export default function MeetingSummary({
                         </button>
                         <button
                             onClick={onClose}
-                            className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-white rounded-lg text-sm font-medium transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg text-sm font-medium transition-colors"
                         >
                             Fechar
                         </button>

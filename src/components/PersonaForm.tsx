@@ -104,13 +104,13 @@ export default function PersonaForm({
         <form onSubmit={handleSubmit} className="space-y-6">
             {/* Header Actions */}
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-[var(--foreground)]">
+                <h2 className="text-xl font-semibold text-foreground">
                     {persona ? "Editar Persona" : "Nova Persona"}
                 </h2>
                 <button
                     type="button"
                     onClick={loadTemplate}
-                    className="text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] transition-colors"
+                    className="text-sm text-primary hover:text-primary-hover transition-colors"
                 >
                     Carregar template
                 </button>
@@ -119,7 +119,7 @@ export default function PersonaForm({
             {/* Basic Info */}
             <div className="space-y-4">
                 <div>
-                    <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+                    <label className="block text-sm font-medium text-foreground mb-1.5">
                         Nome da Persona
                     </label>
                     <input
@@ -127,13 +127,13 @@ export default function PersonaForm({
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Ex: Investidor Cético"
-                        className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                        className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:border-primary focus:outline-none transition-colors"
                         required
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+                    <label className="block text-sm font-medium text-foreground mb-1.5">
                         Descrição Curta
                     </label>
                     <input
@@ -141,14 +141,14 @@ export default function PersonaForm({
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Ex: Investidor experiente que questiona tudo"
-                        className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                        className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:border-primary focus:outline-none transition-colors"
                         required
                     />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+                        <label className="block text-sm font-medium text-foreground mb-1.5">
                             Estilo Comportamental
                         </label>
                         <input
@@ -156,13 +156,13 @@ export default function PersonaForm({
                             value={formData.style}
                             onChange={(e) => setFormData({ ...formData, style: e.target.value })}
                             placeholder="Ex: Direto e analítico"
-                            className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:border-primary focus:outline-none transition-colors"
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+                        <label className="block text-sm font-medium text-foreground mb-1.5">
                             Tom de Voz
                         </label>
                         <input
@@ -170,7 +170,7 @@ export default function PersonaForm({
                             value={formData.tone}
                             onChange={(e) => setFormData({ ...formData, tone: e.target.value })}
                             placeholder="Ex: Informal e provocador"
-                            className="w-full px-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:border-primary focus:outline-none transition-colors"
                             required
                         />
                     </div>
@@ -179,8 +179,8 @@ export default function PersonaForm({
 
             {/* Risk Tolerance */}
             <div>
-                <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
-                    Tolerância a Risco: <span className="text-[var(--primary)]">{getRiskLabel(formData.riskTolerance)}</span>
+                <label className="block text-sm font-medium text-foreground mb-1.5">
+                    Tolerância a Risco: <span className="text-primary">{getRiskLabel(formData.riskTolerance)}</span>
                 </label>
                 <input
                     type="range"
@@ -189,9 +189,9 @@ export default function PersonaForm({
                     step="0.1"
                     value={formData.riskTolerance}
                     onChange={(e) => setFormData({ ...formData, riskTolerance: parseFloat(e.target.value) })}
-                    className="w-full accent-[var(--primary)]"
+                    className="w-full accent-primary"
                 />
-                <div className="flex justify-between text-xs text-[var(--muted)] mt-1">
+                <div className="flex justify-between text-xs text-muted mt-1">
                     <span>Conservador</span>
                     <span>Moderado</span>
                     <span>Agressivo</span>
@@ -206,7 +206,7 @@ export default function PersonaForm({
                 { key: "instructions" as const, label: "Instruções Explícitas", placeholder: "Ex: Nunca bajule" },
             ].map(({ key, label, placeholder }) => (
                 <div key={key}>
-                    <label className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
+                    <label className="block text-sm font-medium text-foreground mb-1.5">
                         {label}
                     </label>
                     <div className="space-y-2">
@@ -217,12 +217,12 @@ export default function PersonaForm({
                                     value={item}
                                     onChange={(e) => handleArrayChange(key, index, e.target.value)}
                                     placeholder={placeholder}
-                                    className="flex-1 px-4 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-xl text-[var(--foreground)] placeholder-[var(--muted)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                                    className="flex-1 px-4 py-2.5 bg-background border border-border rounded-xl text-foreground placeholder-muted focus:border-primary focus:outline-none transition-colors"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => handleRemoveArrayItem(key, index)}
-                                    className="p-2.5 text-[var(--muted)] hover:text-[var(--destructive)] transition-colors"
+                                    className="p-2.5 text-muted hover:text-destructive transition-colors"
                                     disabled={formData[key].length <= 1}
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,7 +234,7 @@ export default function PersonaForm({
                         <button
                             type="button"
                             onClick={() => handleAddArrayItem(key)}
-                            className="text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] transition-colors flex items-center gap-1"
+                            className="text-sm text-primary hover:text-primary-hover transition-colors flex items-center gap-1"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -246,11 +246,11 @@ export default function PersonaForm({
             ))}
 
             {/* Actions */}
-            <div className="flex gap-3 pt-4 border-t border-[var(--border)]">
+            <div className="flex gap-3 pt-4 border-t border-border">
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="flex-1 px-4 py-2.5 text-sm font-medium text-[var(--foreground)] bg-[var(--background)] hover:bg-[var(--border)] border border-[var(--border)] rounded-xl transition-colors duration-200"
+                    className="flex-1 px-4 py-2.5 text-sm font-medium text-foreground bg-background hover:bg-border border border-border rounded-xl transition-colors duration-200"
                     disabled={isLoading}
                 >
                     Cancelar
@@ -258,7 +258,7 @@ export default function PersonaForm({
                 <button
                     type="submit"
                     disabled={isLoading || !formData.name.trim()}
-                    className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:opacity-50 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-primary hover:bg-primary-hover disabled:opacity-50 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
                 >
                     {isLoading ? (
                         <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>

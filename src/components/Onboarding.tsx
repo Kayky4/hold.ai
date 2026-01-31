@@ -132,7 +132,7 @@ export default function Onboarding() {
     const isLastStep = currentStep === steps.length - 1;
 
     return (
-        <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
             {/* Theme Toggle */}
             <div className="absolute top-4 right-4 z-50">
                 <ThemeToggle />
@@ -147,21 +147,21 @@ export default function Onboarding() {
                                 key={index}
                                 className={`h-1.5 rounded-full transition-all ${index <= currentStep
                                     ? "w-8 bg-gradient-to-r from-violet-600 to-purple-600"
-                                    : "w-4 bg-[var(--border)]"
+                                    : "w-4 bg-border"
                                     }`}
                             />
                         ))}
                     </div>
                     <button
                         onClick={handleSkip}
-                        className="text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                         Pular tutorial
                     </button>
                 </div>
 
                 {/* Card */}
-                <div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl shadow-xl overflow-hidden">
+                <div className="bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
                     {/* Content */}
                     <div className="p-8 md:p-12 text-center">
                         {/* Icon */}
@@ -170,12 +170,12 @@ export default function Onboarding() {
                         </div>
 
                         {/* Title */}
-                        <h1 className="text-2xl md:text-3xl font-bold text-[var(--foreground)] mb-4">
+                        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
                             {step.title}
                         </h1>
 
                         {/* Description */}
-                        <p className="text-[var(--muted-foreground)] text-lg max-w-md mx-auto">
+                        <p className="text-muted-foreground text-lg max-w-md mx-auto">
                             {step.description}
                         </p>
 
@@ -198,35 +198,35 @@ export default function Onboarding() {
                             <div className="mt-8 grid grid-cols-4 gap-2 max-w-sm mx-auto">
                                 <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20">
                                     <span className="text-lg font-bold text-violet-400">H</span>
-                                    <p className="text-[10px] text-[var(--muted)]">Hipótese</p>
+                                    <p className="text-[10px] text-muted">Hipótese</p>
                                 </div>
                                 <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
                                     <span className="text-lg font-bold text-rose-400">O</span>
-                                    <p className="text-[10px] text-[var(--muted)]">Objeções</p>
+                                    <p className="text-[10px] text-muted">Objeções</p>
                                 </div>
                                 <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                                     <span className="text-lg font-bold text-emerald-400">L</span>
-                                    <p className="text-[10px] text-[var(--muted)]">Alavancas</p>
+                                    <p className="text-[10px] text-muted">Alavancas</p>
                                 </div>
                                 <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
                                     <span className="text-lg font-bold text-amber-400">D</span>
-                                    <p className="text-[10px] text-[var(--muted)]">Decisão</p>
+                                    <p className="text-[10px] text-muted">Decisão</p>
                                 </div>
                             </div>
                         )}
                     </div>
 
                     {/* Actions */}
-                    <div className="px-8 py-6 bg-[var(--background)] border-t border-[var(--border)] flex items-center justify-between">
+                    <div className="px-8 py-6 bg-background border-t border-border flex items-center justify-between">
                         <button
                             onClick={handlePrev}
                             disabled={currentStep === 0}
-                            className="px-4 py-2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            className="px-4 py-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                         >
                             ← Anterior
                         </button>
 
-                        <div className="text-sm text-[var(--muted)]">
+                        <div className="text-sm text-muted">
                             {currentStep + 1} de {steps.length}
                         </div>
 
@@ -257,7 +257,7 @@ export default function Onboarding() {
                 </div>
 
                 {/* Tips */}
-                <p className="text-center text-sm text-[var(--muted)] mt-6">
+                <p className="text-center text-sm text-muted mt-6">
                     💡 Dica: Você pode revisitar este tutorial a qualquer momento nas configurações
                 </p>
             </div>

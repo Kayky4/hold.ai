@@ -169,9 +169,9 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-[var(--card)] rounded-2xl shadow-2xl border border-[var(--border)] w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
+            <div className="bg-card rounded-2xl shadow-2xl border border-border w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
                             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,24 +179,24 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                             </svg>
                         </div>
                         <div>
-                            <h2 className="text-lg font-semibold text-[var(--foreground)]">
+                            <h2 className="text-lg font-semibold text-foreground">
                                 Suas Métricas
                             </h2>
-                            <p className="text-sm text-[var(--muted-foreground)]">
+                            <p className="text-sm text-muted-foreground">
                                 Acompanhe seu progresso e consistência
                             </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
                         {/* Period Selector */}
-                        <div className="flex bg-[var(--background)] rounded-lg p-1">
+                        <div className="flex bg-background rounded-lg p-1">
                             {(["week", "month", "all"] as const).map((period) => (
                                 <button
                                     key={period}
                                     onClick={() => setActivePeriod(period)}
                                     className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${activePeriod === period
-                                        ? "bg-[var(--primary)] text-white"
-                                        : "text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+                                        ? "bg-primary text-white"
+                                        : "text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
                                     {period === "week" ? "7 dias" : period === "month" ? "30 dias" : "Tudo"}
@@ -205,9 +205,9 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                         </div>
                         <button
                             onClick={onClose}
-                            className="p-2 hover:bg-[var(--border)] rounded-lg transition-colors"
+                            className="p-2 hover:bg-border rounded-lg transition-colors"
                         >
-                            <svg className="w-5 h-5 text-[var(--muted-foreground)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
@@ -218,44 +218,44 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                 <div className="flex-1 overflow-y-auto p-6">
                     {loading ? (
                         <div className="flex items-center justify-center py-16">
-                            <div className="w-10 h-10 border-2 border-[var(--primary)]/30 border-t-[var(--primary)] rounded-full animate-spin" />
+                            <div className="w-10 h-10 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                         </div>
                     ) : metrics ? (
                         <div className="space-y-6">
                             {/* Main Stats Grid */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 {/* Meetings */}
-                                <div className="bg-[var(--background)] rounded-xl p-4 border border-[var(--border)]">
+                                <div className="bg-background rounded-xl p-4 border border-border">
                                     <div className="flex items-center gap-2 mb-3">
                                         <div className="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
                                             <svg className="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                             </svg>
                                         </div>
-                                        <span className="text-xs text-[var(--muted-foreground)]">Reuniões</span>
+                                        <span className="text-xs text-muted-foreground">Reuniões</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-[var(--foreground)]">
+                                    <p className="text-3xl font-bold text-foreground">
                                         {metrics.totalMeetings}
                                     </p>
                                 </div>
 
                                 {/* Decisions */}
-                                <div className="bg-[var(--background)] rounded-xl p-4 border border-[var(--border)]">
+                                <div className="bg-background rounded-xl p-4 border border-border">
                                     <div className="flex items-center gap-2 mb-3">
                                         <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                                             <svg className="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
-                                        <span className="text-xs text-[var(--muted-foreground)]">Decisões</span>
+                                        <span className="text-xs text-muted-foreground">Decisões</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-[var(--foreground)]">
+                                    <p className="text-3xl font-bold text-foreground">
                                         {metrics.totalDecisions}
                                     </p>
                                 </div>
 
                                 {/* Completion Rate */}
-                                <div className="bg-[var(--background)] rounded-xl p-4 border border-[var(--border)]">
+                                <div className="bg-background rounded-xl p-4 border border-border">
                                     <div className="flex items-center gap-2 mb-3">
                                         <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                                             <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,15 +263,15 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
                                             </svg>
                                         </div>
-                                        <span className="text-xs text-[var(--muted-foreground)]">Concluídas</span>
+                                        <span className="text-xs text-muted-foreground">Concluídas</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-[var(--foreground)]">
+                                    <p className="text-3xl font-bold text-foreground">
                                         {metrics.completionRate}%
                                     </p>
                                 </div>
 
                                 {/* Streak */}
-                                <div className="bg-[var(--background)] rounded-xl p-4 border border-[var(--border)]">
+                                <div className="bg-background rounded-xl p-4 border border-border">
                                     <div className="flex items-center gap-2 mb-3">
                                         <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
                                             <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,18 +279,18 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
                                             </svg>
                                         </div>
-                                        <span className="text-xs text-[var(--muted-foreground)]">Streak</span>
+                                        <span className="text-xs text-muted-foreground">Streak</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-[var(--foreground)]">
+                                    <p className="text-3xl font-bold text-foreground">
                                         {metrics.streak}
-                                        <span className="text-base font-normal text-[var(--muted-foreground)]"> dias</span>
+                                        <span className="text-base font-normal text-muted-foreground"> dias</span>
                                     </p>
                                 </div>
                             </div>
 
                             {/* Weekly Activity Chart */}
-                            <div className="bg-[var(--background)] rounded-xl p-5 border border-[var(--border)]">
-                                <h3 className="text-sm font-medium text-[var(--foreground)] mb-4">
+                            <div className="bg-background rounded-xl p-5 border border-border">
+                                <h3 className="text-sm font-medium text-foreground mb-4">
                                     Atividade dos Últimos 7 Dias
                                 </h3>
                                 <div className="flex items-end justify-between gap-2 h-32">
@@ -303,12 +303,12 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                                     <div
                                                         className={`w-full rounded-t-md transition-all ${count > 0
                                                             ? "bg-gradient-to-t from-violet-600 to-violet-400"
-                                                            : "bg-[var(--border)]"
+                                                            : "bg-border"
                                                             }`}
                                                         style={{ height: `${Math.max(height, 8)}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-xs text-[var(--muted-foreground)]">
+                                                <span className="text-xs text-muted-foreground">
                                                     {getDayLabel(index)}
                                                 </span>
                                             </div>
@@ -320,19 +320,19 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                             {/* Decision Status */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {/* Decided vs Pending */}
-                                <div className="bg-[var(--background)] rounded-xl p-5 border border-[var(--border)]">
-                                    <h3 className="text-sm font-medium text-[var(--foreground)] mb-4">
+                                <div className="bg-background rounded-xl p-5 border border-border">
+                                    <h3 className="text-sm font-medium text-foreground mb-4">
                                         Status das Decisões
                                     </h3>
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                                                <span className="text-sm text-[var(--muted-foreground)]">Decididas</span>
+                                                <span className="text-sm text-muted-foreground">Decididas</span>
                                             </div>
-                                            <span className="font-medium text-[var(--foreground)]">{metrics.decidedCount}</span>
+                                            <span className="font-medium text-foreground">{metrics.decidedCount}</span>
                                         </div>
-                                        <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                                        <div className="h-2 bg-border rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-emerald-500 rounded-full transition-all"
                                                 style={{ width: `${metrics.totalDecisions > 0 ? (metrics.decidedCount / metrics.totalDecisions) * 100 : 0}%` }}
@@ -341,11 +341,11 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-3 h-3 rounded-full bg-amber-500" />
-                                                <span className="text-sm text-[var(--muted-foreground)]">Pendentes</span>
+                                                <span className="text-sm text-muted-foreground">Pendentes</span>
                                             </div>
-                                            <span className="font-medium text-[var(--foreground)]">{metrics.pendingCount}</span>
+                                            <span className="font-medium text-foreground">{metrics.pendingCount}</span>
                                         </div>
-                                        <div className="h-2 bg-[var(--border)] rounded-full overflow-hidden">
+                                        <div className="h-2 bg-border rounded-full overflow-hidden">
                                             <div
                                                 className="h-full bg-amber-500 rounded-full transition-all"
                                                 style={{ width: `${metrics.totalDecisions > 0 ? (metrics.pendingCount / metrics.totalDecisions) * 100 : 0}%` }}
@@ -355,8 +355,8 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                 </div>
 
                                 {/* Recent Activity */}
-                                <div className="bg-[var(--background)] rounded-xl p-5 border border-[var(--border)]">
-                                    <h3 className="text-sm font-medium text-[var(--foreground)] mb-4">
+                                <div className="bg-background rounded-xl p-5 border border-border">
+                                    <h3 className="text-sm font-medium text-foreground mb-4">
                                         Atividade Recente
                                     </h3>
                                     {metrics.recentActivity.length > 0 ? (
@@ -378,10 +378,10 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                                         )}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-sm text-[var(--foreground)] truncate">
+                                                        <p className="text-sm text-foreground truncate">
                                                             {activity.title}
                                                         </p>
-                                                        <p className="text-xs text-[var(--muted)]">
+                                                        <p className="text-xs text-muted">
                                                             {activity.date.toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}
                                                         </p>
                                                     </div>
@@ -389,7 +389,7 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-sm text-[var(--muted-foreground)] text-center py-4">
+                                        <p className="text-sm text-muted-foreground text-center py-4">
                                             Nenhuma atividade recente
                                         </p>
                                     )}
@@ -402,14 +402,14 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                                     <div className="flex items-center gap-3">
                                         <span className="text-2xl">🔥</span>
                                         <div>
-                                            <p className="font-medium text-[var(--foreground)]">
+                                            <p className="font-medium text-foreground">
                                                 {metrics.streak >= 7
                                                     ? `Incrível! ${metrics.streak} dias de streak!`
                                                     : metrics.streak >= 3
                                                         ? `Continue assim! ${metrics.streak} dias seguidos!`
                                                         : `Bom começo! ${metrics.streak} dia${metrics.streak > 1 ? "s" : ""} de streak!`}
                                             </p>
-                                            <p className="text-sm text-[var(--muted-foreground)]">
+                                            <p className="text-sm text-muted-foreground">
                                                 Decisões consistentes criam resultados extraordinários.
                                             </p>
                                         </div>
@@ -419,14 +419,14 @@ export default function MetricsDashboard({ isOpen, onClose, projectId }: Metrics
                         </div>
                     ) : (
                         <div className="text-center py-16">
-                            <p className="text-[var(--muted-foreground)]">Erro ao carregar métricas</p>
+                            <p className="text-muted-foreground">Erro ao carregar métricas</p>
                         </div>
                     )}
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--background)]">
-                    <p className="text-xs text-[var(--muted)] text-center">
+                <div className="px-6 py-4 border-t border-border bg-background">
+                    <p className="text-xs text-muted text-center">
                         📊 Continue usando o Hold.ai para melhorar suas estatísticas!
                     </p>
                 </div>

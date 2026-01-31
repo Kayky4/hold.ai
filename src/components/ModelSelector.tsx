@@ -80,7 +80,7 @@ export default function ModelSelector({
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--card)] transition-all ${compact ? "text-xs" : "text-sm"
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-border bg-background hover:bg-card transition-all ${compact ? "text-xs" : "text-sm"
                     }`}
             >
                 {currentModel && (
@@ -88,11 +88,11 @@ export default function ModelSelector({
                         <span className={`${getSpeedColor(currentModel.speed)}`}>
                             {getSpeedIcon(currentModel.speed)}
                         </span>
-                        <span className="text-[var(--foreground)] font-medium">
+                        <span className="text-foreground font-medium">
                             {currentModel.name}
                         </span>
                         <svg
-                            className={`w-4 h-4 text-[var(--muted)] transition-transform ${isOpen ? "rotate-180" : ""}`}
+                            className={`w-4 h-4 text-muted transition-transform ${isOpen ? "rotate-180" : ""}`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -104,9 +104,9 @@ export default function ModelSelector({
             </button>
 
             {isOpen && (
-                <div className="absolute top-full right-0 mt-2 w-64 bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-xl z-50 overflow-hidden">
+                <div className="absolute top-full right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
                     <div className="p-2">
-                        <p className="text-xs text-[var(--muted)] px-2 py-1 mb-1">Modelo de IA</p>
+                        <p className="text-xs text-muted px-2 py-1 mb-1">Modelo de IA</p>
                         {AI_MODELS.map((model) => (
                             <button
                                 key={model.id}
@@ -115,8 +115,8 @@ export default function ModelSelector({
                                     setIsOpen(false);
                                 }}
                                 className={`w-full flex items-start gap-3 p-3 rounded-lg transition-colors ${selectedModel === model.id
-                                    ? "bg-[var(--primary)]/10 border border-[var(--primary)]/20"
-                                    : "hover:bg-[var(--background)]"
+                                    ? "bg-primary/10 border border-primary/20"
+                                    : "hover:bg-background"
                                     }`}
                             >
                                 <div className={`w-8 h-8 rounded-lg ${getSpeedBg(model.speed)} flex items-center justify-center flex-shrink-0`}>
@@ -126,16 +126,16 @@ export default function ModelSelector({
                                 </div>
                                 <div className="flex-1 text-left">
                                     <div className="flex items-center gap-2">
-                                        <span className="font-medium text-[var(--foreground)] text-sm">
+                                        <span className="font-medium text-foreground text-sm">
                                             {model.name}
                                         </span>
                                         {selectedModel === model.id && (
-                                            <svg className="w-4 h-4 text-[var(--primary)]" fill="currentColor" viewBox="0 0 20 20">
+                                            <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20">
                                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                             </svg>
                                         )}
                                     </div>
-                                    <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
+                                    <p className="text-xs text-muted-foreground mt-0.5">
                                         {model.description}
                                     </p>
                                 </div>
