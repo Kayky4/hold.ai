@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ============================================
+    // 📐 HELPER FUNCTIONS
+    // ============================================
+    
+    // Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if user is the owner
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // ============================================
+    // 👤 USERS COLLECTION
+    // ============================================
+    
+    match /users/{userId} {
+      // Users can only read/write their own profile
+      allow read, write: if isOwner(userId);
+      
+      // ============================================
+      // 🌟 NORTH STAR (subcollection)
+      // ============================================
+      match /northStar/{docId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // ============================================
+      // 📁 CRM PROJECTS (subcollection)
+      // ============================================
+      match /crmProjects/{projectId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // ============================================
+      // 📋 CRM DECISIONS (subcollection)
+      // ============================================
+      match /crmDecisions/{decisionId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // ============================================
+      // 👥 PERSONAS (subcollection)
+      // ============================================
+      match /personas/{personaId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // ============================================
+      // ⚙️ SETTINGS (subcollection)
+      // ============================================
+      match /settings/{settingId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // ============================================
+    // 💬 CONVERSATIONS (top-level, legacy)
+    // ============================================
+    match /conversations/{conversationId} {
+      // Users can only access their own conversations
+      allow read, write: if isAuthenticated() 
+                         && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated();
+      
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read, write: if isAuthenticated();
+      }
+    }
+    
+    // ============================================
+    // 📁 PROJECTS (top-level, legacy)
+    // ============================================
+    match /projects/{projectId} {
+      allow read, write: if isAuthenticated() 
+                         && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated();
+    }
+    
+    // ============================================
+    // 📊 DECISIONS (top-level, legacy)
+    // ============================================
+    match /decisions/{decisionId} {
+      allow read, write: if isAuthenticated() 
+                         && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated();
+    }
+  }
+}

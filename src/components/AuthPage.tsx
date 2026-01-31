@@ -8,12 +8,14 @@ import {
     signInWithGoogle,
     resetPassword,
 } from "@/lib/auth";
+import { useAuth } from "@/contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
 import PasswordInput from "./PasswordInput";
 
 type AuthMode = "login" | "signup" | "reset";
 
 export default function AuthPage() {
+    const { refreshProfile } = useAuth();
     const [mode, setMode] = useState<AuthMode>("login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -62,8 +64,10 @@ export default function AuthPage() {
         setLoading(true);
 
         try {
-            const result = await signInWithGoogle();
-            // If new user or incomplete profile, they'll be redirected to complete profile
+            await signInWithGoogle();
+            // Refresh profile to ensure AuthContext has updated data before navigation
+            await refreshProfile();
+            // Navigation will be handled by AuthGuard based on profile state
             router.push("/");
         } catch (err: any) {
             console.error("Google auth error:", err);

@@ -19,8 +19,13 @@ import {
     setDoc,
     updateDoc,
     serverTimestamp,
+    collection,
+    getDocs,
+    query,
+    where,
 } from "firebase/firestore";
 import { auth, googleProvider, db } from "./firebase";
+import { DEFAULT_PERSONAS } from "./defaultPersonas";
 
 // User profile stored in Firestore
 export interface UserProfile {
@@ -45,6 +50,40 @@ export interface AuthResult {
 }
 
 const USERS_COLLECTION = "users";
+const PERSONAS_COLLECTION = "personas";
+
+/**
+ * Seed default personas for a new user
+ * Called automatically on first login
+ */
+async function seedDefaultPersonas(userId: string): Promise<void> {
+    try {
+        // Check if user already has personas
+        const personasRef = collection(db, USERS_COLLECTION, userId, PERSONAS_COLLECTION);
+        const existingPersonas = await getDocs(personasRef);
+
+        if (!existingPersonas.empty) {
+            // User already has personas, skip seeding
+            return;
+        }
+
+        // Seed default personas
+        for (const persona of DEFAULT_PERSONAS) {
+            const personaRef = doc(personasRef, persona.id);
+            await setDoc(personaRef, {
+                ...persona,
+                userId,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp(),
+            });
+        }
+
+        console.log(`Seeded ${DEFAULT_PERSONAS.length} default personas for user ${userId}`);
+    } catch (error) {
+        console.error("Error seeding default personas:", error);
+        // Don't throw - seeding failure shouldn't block user creation
+    }
+}
 
 // Create or update user profile in Firestore
 async function createOrUpdateUserProfile(
@@ -72,6 +111,9 @@ async function createOrUpdateUserProfile(
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),
         });
+
+        // Seed default personas for new user
+        await seedDefaultPersonas(user.uid);
 
         return {
             ...newProfile,

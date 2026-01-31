@@ -11,6 +11,7 @@ import {
     linkGoogleToAccount,
 } from "@/lib/auth";
 import PasswordInput from "./PasswordInput";
+import Toast from "./Toast";
 
 interface EditProfileModalProps {
     isOpen: boolean;
@@ -31,6 +32,11 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
     const [resetPasswordLoading, setResetPasswordLoading] = useState(false);
     const [resetPasswordSent, setResetPasswordSent] = useState(false);
+
+    // Toast state
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
+    const [toastType, setToastType] = useState<"success" | "error">("success");
 
     // Account linking states
     const [newPassword, setNewPassword] = useState("");
@@ -84,14 +90,16 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
             });
 
             await refreshProfile();
-            setSuccess("Perfil atualizado com sucesso!");
 
-            setTimeout(() => {
-                setSuccess(null);
-            }, 3000);
+            // Show toast
+            setToastMessage("Perfil atualizado com sucesso!");
+            setToastType("success");
+            setShowToast(true);
         } catch (err: any) {
             console.error("Error updating profile:", err);
-            setError(err.message || "Erro ao atualizar perfil");
+            setToastMessage(err.message || "Erro ao atualizar perfil");
+            setToastType("error");
+            setShowToast(true);
         } finally {
             setLoading(false);
         }
@@ -313,8 +321,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                         type="button"
                                         onClick={() => setRole(r.value)}
                                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${role === r.value
-                                                ? "bg-primary text-white"
-                                                : "bg-background border border-border text-foreground hover:bg-border"
+                                            ? "bg-primary text-white"
+                                            : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {r.label}
@@ -335,8 +343,8 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                                         type="button"
                                         onClick={() => setProjectType(t.value)}
                                         className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${projectType === t.value
-                                                ? "bg-primary text-white"
-                                                : "bg-background border border-border text-foreground hover:bg-border"
+                                            ? "bg-primary text-white"
+                                            : "bg-background border border-border text-foreground hover:bg-border"
                                             }`}
                                     >
                                         {t.label}
@@ -543,19 +551,32 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                     <button
                         onClick={handleSave}
                         disabled={loading}
-                        className="px-5 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all disabled:opacity-50 flex items-center gap-2"
+                        className="relative px-5 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all disabled:opacity-70 overflow-hidden min-w-[150px]"
                     >
-                        {loading ? (
-                            <>
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Salvando...
-                            </>
-                        ) : (
-                            "Salvar alterações"
+                        <span className={`flex items-center justify-center gap-2 transition-all duration-300 ${loading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+                            Salvar alterações
+                        </span>
+                        {loading && (
+                            <span className="absolute inset-0 flex items-center justify-center gap-2">
+                                <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span className="animate-pulse">Salvando...</span>
+                            </span>
                         )}
                     </button>
                 </div>
             </div>
+
+            {/* Toast Notification */}
+            {showToast && (
+                <Toast
+                    message={toastMessage}
+                    type={toastType}
+                    onClose={() => setShowToast(false)}
+                />
+            )}
         </div>
     );
 }

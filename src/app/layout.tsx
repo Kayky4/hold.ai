@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
 const inter = Inter({
-  variable: "--font-geist-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "hold.ai — Simulação de Reuniões Estratégicas",
-  description: "Plataforma de simulação de reuniões estratégicas baseada em IA para fundadores de SaaS",
+  title: "HoldAI — Decision Intelligence Platform",
+  description: "Plataforma de inteligência de decisão para founders que pensam antes de agir",
 };
 
 export default function RootLayout({
@@ -20,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${ibmPlexMono.variable} antialiased`}>
         <Providers>
           {children}
         </Providers>
@@ -28,5 +36,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-

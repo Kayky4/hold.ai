@@ -23,11 +23,26 @@ function timestampToDate(timestamp: Timestamp | null): Date {
 }
 
 // Create a new conversation
-export async function createConversation(userId: string, title: string = "Nova Conversa"): Promise<string> {
+export interface CreateConversationOptions {
+    mode?: 'solo' | 'mesa' | 'revisao';
+    phase?: 'H' | 'O' | 'L' | 'D';
+    counselorCount?: number;
+    counselorIds?: string[];
+}
+
+export async function createConversation(
+    userId: string,
+    title: string = "Nova Conversa",
+    options: CreateConversationOptions = {}
+): Promise<string> {
     const docRef = await addDoc(collection(db, CONVERSATIONS_COLLECTION), {
         userId,
         title,
         messages: [],
+        mode: options.mode || 'solo',
+        phase: options.phase || 'H',
+        counselorCount: options.counselorCount || 0,
+        counselorIds: options.counselorIds || [],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
     });
@@ -59,6 +74,10 @@ export async function getConversations(userId: string): Promise<Conversation[]> 
             })),
             createdAt: timestampToDate(data.createdAt),
             updatedAt: timestampToDate(data.updatedAt),
+            mode: data.mode || 'solo',
+            phase: data.phase || 'H',
+            counselorCount: data.counselorCount || 0,
+            counselorIds: data.counselorIds || [],
         };
     });
 }
@@ -87,6 +106,10 @@ export async function getConversation(id: string): Promise<Conversation | null> 
         })),
         createdAt: timestampToDate(data.createdAt),
         updatedAt: timestampToDate(data.updatedAt),
+        mode: data.mode || 'solo',
+        phase: data.phase || 'H',
+        counselorCount: data.counselorCount || 0,
+        counselorIds: data.counselorIds || [],
     };
 }
 

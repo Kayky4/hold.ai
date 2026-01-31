@@ -76,8 +76,17 @@ export async function getActiveProject(userId: string): Promise<ProjectContext |
     } as ProjectContext;
 }
 
+// Maximum number of projects per user
+const MAX_PROJECTS_PER_USER = 3;
+
 // Create a new project
 export async function createProject(userId: string, data: ProjectContextInput): Promise<string> {
+    // Validate project limit
+    const existingProjects = await getProjects(userId);
+    if (existingProjects.length >= MAX_PROJECTS_PER_USER) {
+        throw new Error(`Limite de ${MAX_PROJECTS_PER_USER} projetos atingido. Exclua um projeto existente para criar um novo.`);
+    }
+
     const docRef = await addDoc(collection(db, COLLECTION_NAME), {
         userId,
         name: data.name,

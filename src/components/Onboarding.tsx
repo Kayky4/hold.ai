@@ -1,266 +1,212 @@
+/**
+ * 🎓 FTUX Onboarding Component
+ * 
+ * First-Time User Experience para novos usuários.
+ * Fluxo simples: Hook emocional → Sessão → CRM
+ * 
+ * @see fluxos_jornadas.md — FTUX
+ * @see design_system.md — Industrial Minimal
+ */
+
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { completeOnboarding } from "@/lib/auth";
 import { useAuth } from "@/contexts/AuthContext";
 import ThemeToggle from "./ThemeToggle";
+import SessionModal from "./SessionModal";
+import { completeOnboarding } from "@/lib/auth";
 
-interface OnboardingStep {
-    id: string;
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    action?: string;
-}
+type FTUXStep = "welcome" | "decision" | "session";
 
 export default function Onboarding() {
     const { user, refreshProfile } = useAuth();
-    const router = useRouter();
-    const [currentStep, setCurrentStep] = useState(0);
-    const [loading, setLoading] = useState(false);
+    const [step, setStep] = useState<FTUXStep>("welcome");
+    const [showSession, setShowSession] = useState(false);
+    const [isCompleting, setIsCompleting] = useState(false);
 
-    const steps: OnboardingStep[] = [
-        {
-            id: "welcome",
-            title: "Bem-vindo ao Hold.ai! 🎉",
-            description: "Sua mesa de advisors virtuais está pronta. Vamos fazer um tour rápido para você aproveitar ao máximo.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                </svg>
-            ),
-        },
-        {
-            id: "personas",
-            title: "Conheça as Personas",
-            description: "Personas são seus advisors virtuais especializados. Cada uma tem expertise, vieses e estilo único. Você pode usar as padrão ou criar suas próprias.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-            ),
-            action: "Ver Personas",
-        },
-        {
-            id: "meetings",
-            title: "Reuniões Estratégicas",
-            description: "Coloque duas personas para debater seu dilema. Elas vão discordar, concordar, e te ajudar a ver ângulos que você não veria sozinho.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-            ),
-            action: "Iniciar Reunião",
-        },
-        {
-            id: "hold",
-            title: "Framework HOLD",
-            description: "Cada reunião é estruturada automaticamente: Hipótese → Objeções → Alavancas → Decisão. Você percebe o framework só no resumo final.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-            ),
-        },
-        {
-            id: "decisions",
-            title: "Dashboard de Decisões",
-            description: "Todas as decisões ficam salvas num só lugar. Acompanhe o que foi decidido, o que está pendente, e revisiste quando precisar.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                </svg>
-            ),
-            action: "Ver Decisões",
-        },
-        {
-            id: "ready",
-            title: "Tudo Pronto! 🚀",
-            description: "Você está pronto para tomar decisões melhores. Comece criando seu primeiro projeto ou iniciando uma reunião.",
-            icon: (
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-            ),
-        },
-    ];
+    // Handle session closed (complete onboarding)
+    const handleSessionClose = async () => {
+        setShowSession(false);
 
-    const handleNext = () => {
-        if (currentStep < steps.length - 1) {
-            setCurrentStep(currentStep + 1);
-        }
-    };
-
-    const handlePrev = () => {
-        if (currentStep > 0) {
-            setCurrentStep(currentStep - 1);
-        }
-    };
-
-    const handleComplete = async () => {
         if (!user) return;
 
-        setLoading(true);
+        // Complete onboarding
+        setIsCompleting(true);
         try {
             await completeOnboarding(user.uid);
             await refreshProfile();
-            router.push("/");
         } catch (error) {
             console.error("Error completing onboarding:", error);
         } finally {
-            setLoading(false);
+            setIsCompleting(false);
         }
     };
 
+    // Skip onboarding
     const handleSkip = async () => {
         if (!user) return;
-
-        setLoading(true);
+        setIsCompleting(true);
         try {
             await completeOnboarding(user.uid);
             await refreshProfile();
-            router.push("/");
         } catch (error) {
             console.error("Error skipping onboarding:", error);
         } finally {
-            setLoading(false);
+            setIsCompleting(false);
         }
     };
 
-    const step = steps[currentStep];
-    const isLastStep = currentStep === steps.length - 1;
+    // Start first session
+    const handleStartSession = () => {
+        setShowSession(true);
+    };
 
-    return (
-        <div className="min-h-screen bg-background flex items-center justify-center p-4 relative">
-            {/* Theme Toggle */}
-            <div className="absolute top-4 right-4 z-50">
-                <ThemeToggle />
+    // Render loading overlay
+    if (isCompleting) {
+        return (
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center">
+                <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mb-4">
+                    <div className="w-8 h-8 border-3 border-slate-400 border-t-white rounded-full animate-spin" />
+                </div>
+                <p className="text-slate-400">Preparando sua mesa...</p>
             </div>
+        );
+    }
 
-            <div className="w-full max-w-2xl">
-                {/* Progress */}
-                <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-2">
-                        {steps.map((_, index) => (
-                            <div
-                                key={index}
-                                className={`h-1.5 rounded-full transition-all ${index <= currentStep
-                                    ? "w-8 bg-gradient-to-r from-violet-600 to-purple-600"
-                                    : "w-4 bg-border"
-                                    }`}
-                            />
-                        ))}
-                    </div>
-                    <button
-                        onClick={handleSkip}
-                        className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                        Pular tutorial
-                    </button>
+    // Step: Welcome - Hook Emocional
+    if (step === "welcome") {
+        return (
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative">
+                {/* Theme Toggle */}
+                <div className="absolute top-4 right-4 z-50">
+                    <ThemeToggle />
                 </div>
 
-                {/* Card */}
-                <div className="bg-card border border-border rounded-2xl shadow-xl overflow-hidden">
-                    {/* Content */}
-                    <div className="p-8 md:p-12 text-center">
-                        {/* Icon */}
-                        <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center mx-auto mb-6 text-violet-400">
-                            {step.icon}
-                        </div>
+                {/* Skip button - discreto */}
+                <button
+                    onClick={handleSkip}
+                    className="absolute top-4 left-4 text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                >
+                    Pular
+                </button>
 
-                        {/* Title */}
-                        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-                            {step.title}
-                        </h1>
-
-                        {/* Description */}
-                        <p className="text-muted-foreground text-lg max-w-md mx-auto">
-                            {step.description}
-                        </p>
-
-                        {/* Visual hints for specific steps */}
-                        {step.id === "personas" && (
-                            <div className="mt-8 flex justify-center gap-4">
-                                <div className="w-16 h-16 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                                    <span className="text-2xl">💼</span>
-                                </div>
-                                <div className="w-16 h-16 rounded-xl bg-blue-500/20 flex items-center justify-center">
-                                    <span className="text-2xl">🔬</span>
-                                </div>
-                                <div className="w-16 h-16 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                                    <span className="text-2xl">📊</span>
-                                </div>
-                            </div>
-                        )}
-
-                        {step.id === "hold" && (
-                            <div className="mt-8 grid grid-cols-4 gap-2 max-w-sm mx-auto">
-                                <div className="p-3 rounded-lg bg-violet-500/10 border border-violet-500/20">
-                                    <span className="text-lg font-bold text-violet-400">H</span>
-                                    <p className="text-[10px] text-muted">Hipótese</p>
-                                </div>
-                                <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20">
-                                    <span className="text-lg font-bold text-rose-400">O</span>
-                                    <p className="text-[10px] text-muted">Objeções</p>
-                                </div>
-                                <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                                    <span className="text-lg font-bold text-emerald-400">L</span>
-                                    <p className="text-[10px] text-muted">Alavancas</p>
-                                </div>
-                                <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                                    <span className="text-lg font-bold text-amber-400">D</span>
-                                    <p className="text-[10px] text-muted">Decisão</p>
-                                </div>
-                            </div>
-                        )}
+                <div className="max-w-lg text-center">
+                    {/* Icon */}
+                    <div className="w-20 h-20 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-8">
+                        <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
                     </div>
 
-                    {/* Actions */}
-                    <div className="px-8 py-6 bg-background border-t border-border flex items-center justify-between">
+                    {/* Hook Question */}
+                    <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4 leading-tight">
+                        Você tem uma decisão <span className="text-slate-500 dark:text-slate-400">travada?</span>
+                    </h1>
+
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-md mx-auto">
+                        Aquele dilema que fica girando na sua cabeça, sem resposta clara?
+                    </p>
+
+                    {/* CTA Buttons */}
+                    <div className="flex flex-col gap-4">
                         <button
-                            onClick={handlePrev}
-                            disabled={currentStep === 0}
-                            className="px-4 py-2 text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                            onClick={() => setStep("decision")}
+                            className="w-full px-8 py-4 bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                         >
-                            ← Anterior
+                            Sim, quero resolver agora
                         </button>
-
-                        <div className="text-sm text-muted">
-                            {currentStep + 1} de {steps.length}
-                        </div>
-
-                        {isLastStep ? (
-                            <button
-                                onClick={handleComplete}
-                                disabled={loading}
-                                className="px-6 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all disabled:opacity-50"
-                            >
-                                {loading ? (
-                                    <span className="flex items-center gap-2">
-                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        Finalizando...
-                                    </span>
-                                ) : (
-                                    "Começar! 🚀"
-                                )}
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleNext}
-                                className="px-6 py-2.5 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white rounded-xl font-medium transition-all"
-                            >
-                                Próximo →
-                            </button>
-                        )}
+                        <button
+                            onClick={handleSkip}
+                            className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                        >
+                            Só quero explorar primeiro
+                        </button>
                     </div>
                 </div>
 
-                {/* Tips */}
-                <p className="text-center text-sm text-muted mt-6">
-                    💡 Dica: Você pode revisitar este tutorial a qualquer momento nas configurações
+                {/* Bottom hint */}
+                <p className="absolute bottom-6 text-sm text-slate-400">
+                    Hold.ai — Mesa de Conselheiros Virtuais
                 </p>
             </div>
-        </div>
-    );
+        );
+    }
+
+    // Step: Decision - Prepare for session
+    if (step === "decision") {
+        return (
+            <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 relative">
+                {/* Theme Toggle */}
+                <div className="absolute top-4 right-4 z-50">
+                    <ThemeToggle />
+                </div>
+
+                {/* Back button */}
+                <button
+                    onClick={() => setStep("welcome")}
+                    className="absolute top-4 left-4 text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors flex items-center gap-1"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Voltar
+                </button>
+
+                <div className="max-w-lg text-center">
+                    {/* Counselor Icon */}
+                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center mx-auto mb-8 shadow-2xl">
+                        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+
+                    {/* Title */}
+                    <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                        Vamos destravá-la juntos
+                    </h1>
+
+                    <p className="text-lg text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
+                        Você vai conversar com um conselheiro virtual que vai te ajudar a pensar. Sem julgamento, sem pressa.
+                    </p>
+
+                    {/* HOLD Framework Preview */}
+                    <div className="flex justify-center gap-3 mb-10">
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <span className="text-lg font-bold text-slate-700 dark:text-slate-300">H</span>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <span className="text-lg font-bold text-slate-700 dark:text-slate-300">O</span>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <span className="text-lg font-bold text-slate-700 dark:text-slate-300">L</span>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                            <span className="text-lg font-bold text-slate-700 dark:text-slate-300">D</span>
+                        </div>
+                    </div>
+
+                    {/* Giant CTA */}
+                    <button
+                        onClick={handleStartSession}
+                        className="w-full px-10 py-5 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white rounded-2xl font-bold text-xl transition-all duration-200 shadow-2xl hover:shadow-3xl transform hover:scale-[1.02]"
+                    >
+                        Começar minha primeira sessão →
+                    </button>
+
+                    {/* Time estimate */}
+                    <p className="text-sm text-slate-400 mt-4">
+                        ⏱️ ~10-15 minutos
+                    </p>
+                </div>
+
+                {/* Session Modal */}
+                <SessionModal
+                    isOpen={showSession}
+                    onClose={handleSessionClose}
+                />
+            </div>
+        );
+    }
+
+    return null;
 }

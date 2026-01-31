@@ -1,4 +1,4 @@
-export type AIModel = "gemini-2.5-flash-lite" | "gemini-2.5-flash" | "gemini-3-flash";
+export type AIModel = "gemini-2.5-flash-lite" | "gemini-3-flash-preview";
 
 export interface AIModelInfo {
     id: AIModel;
@@ -10,20 +10,14 @@ export interface AIModelInfo {
 export const AI_MODELS: AIModelInfo[] = [
     {
         id: "gemini-2.5-flash-lite",
-        name: "Flash Lite",
-        description: "O mais rápido. Ideal para conversas rápidas.",
+        name: "Rápido",
+        description: "Respostas ágeis para decisões simples.",
         speed: "fast",
     },
     {
-        id: "gemini-2.5-flash",
-        name: "Flash",
-        description: "Equilíbrio entre velocidade e qualidade.",
-        speed: "balanced",
-    },
-    {
-        id: "gemini-3-flash",
-        name: "Flash 3.0",
-        description: "O mais poderoso. Respostas mais elaboradas.",
+        id: "gemini-3-flash-preview",
+        name: "Avançado",
+        description: "Análises mais profundas e detalhadas.",
         speed: "powerful",
     },
 ];

@@ -51,11 +51,10 @@ export default function PersonaManager({
         if (!userId) return;
         setIsSaving(true);
         try {
-            const id = await createPersona(userId, personaData);
+            const newPersona = await createPersona(userId, personaData);
             await loadPersonas();
             setShowForm(false);
             // Auto-select the new persona
-            const newPersona = { ...personaData, id };
             onSelectPersona(newPersona);
         } catch (error) {
             console.error("Error creating persona:", error);
@@ -65,10 +64,10 @@ export default function PersonaManager({
     };
 
     const handleUpdatePersona = async (personaData: Omit<Persona, "id">) => {
-        if (!editingPersona) return;
+        if (!editingPersona || !userId) return;
         setIsSaving(true);
         try {
-            await updatePersona(editingPersona.id, personaData);
+            await updatePersona(userId, editingPersona.id, personaData);
             await loadPersonas();
             setShowForm(false);
             setEditingPersona(null);
@@ -90,9 +89,9 @@ export default function PersonaManager({
     };
 
     const handleConfirmDelete = async () => {
-        if (!personaToDelete) return;
+        if (!personaToDelete || !userId) return;
         try {
-            await deletePersona(personaToDelete.id);
+            await deletePersona(userId, personaToDelete.id);
             await loadPersonas();
         } catch (error) {
             console.error("Error deleting persona:", error);
@@ -181,7 +180,7 @@ export default function PersonaManager({
                                 <div className="flex items-center justify-center py-12">
                                     <div className="w-8 h-8 border-2 border-muted border-t-primary rounded-full animate-spin"></div>
                                 </div>
-                            ) : personas.length === 0 ? (
+                            ) : personas.filter(p => p.id !== 'system-moderator').length === 0 ? (
                                 <div className="text-center py-12">
                                     <div className="w-16 h-16 rounded-2xl bg-background flex items-center justify-center mx-auto mb-4">
                                         <svg className="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,7 +194,7 @@ export default function PersonaManager({
                                 </div>
                             ) : (
                                 <div className="space-y-3">
-                                    {personas.map((persona) => (
+                                    {personas.filter(p => p.id !== 'system-moderator').map((persona) => (
                                         <div
                                             key={persona.id}
                                             onClick={() => handleSelectPersona(persona)}
