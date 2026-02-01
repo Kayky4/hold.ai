@@ -1,6 +1,6 @@
-import { initializeApp, getApps, FirebaseApp } from "firebase/app";
-import { getFirestore, Firestore } from "firebase/firestore";
-import { getAuth, Auth, GoogleAuthProvider } from "firebase/auth";
+import { initializeApp, getApps } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,27 +11,10 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Only initialize Firebase if we have a valid config (not during build time)
-const hasValidConfig = !!firebaseConfig.apiKey;
-
-let app: FirebaseApp;
-let db: Firestore;
-let auth: Auth;
-
-if (hasValidConfig) {
-    // Initialize Firebase only if it hasn't been initialized yet AND we have valid config
-    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-    db = getFirestore(app);
-    auth = getAuth(app);
-} else {
-    // During build time, create mock objects to prevent crashes
-    // These will never be used at runtime since the real config will be available
-    console.warn("[Firebase] No valid config found - using mock objects (this is expected during build)");
-    app = {} as FirebaseApp;
-    db = {} as Firestore;
-    auth = {} as Auth;
-}
-
+// Initialize Firebase only if it hasn't been initialized yet
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const db = getFirestore(app);
+const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 export { app, db, auth, googleProvider };
