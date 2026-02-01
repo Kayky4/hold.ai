@@ -11,58 +11,26 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Check if we're in a build environment without Firebase config
-const isBuildTime = typeof window === "undefined" && !firebaseConfig.apiKey;
+// Only initialize Firebase if we have a valid config (not during build time)
+const hasValidConfig = !!firebaseConfig.apiKey;
 
-// Lazy initialization - only initialize when actually needed and config is available
-let _app: FirebaseApp | null = null;
-let _db: Firestore | null = null;
-let _auth: Auth | null = null;
+let app: FirebaseApp;
+let db: Firestore;
+let auth: Auth;
 
-function getApp(): FirebaseApp {
-    if (isBuildTime) {
-        throw new Error("Firebase cannot be initialized during build time");
-    }
-
-    if (!_app) {
-        _app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-    }
-    return _app;
+if (hasValidConfig) {
+    // Initialize Firebase only if it hasn't been initialized yet AND we have valid config
+    app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    db = getFirestore(app);
+    auth = getAuth(app);
+} else {
+    // During build time, create mock objects to prevent crashes
+    // These will never be used at runtime since the real config will be available
+    console.warn("[Firebase] No valid config found - using mock objects (this is expected during build)");
+    app = {} as FirebaseApp;
+    db = {} as Firestore;
+    auth = {} as Auth;
 }
-
-function getDb(): Firestore {
-    if (!_db) {
-        _db = getFirestore(getApp());
-    }
-    return _db;
-}
-
-function getAuthInstance(): Auth {
-    if (!_auth) {
-        _auth = getAuth(getApp());
-    }
-    return _auth;
-}
-
-// Create proxy objects that lazily initialize Firebase
-// This prevents Firebase from being initialized during SSG/build
-const app = new Proxy({} as FirebaseApp, {
-    get(_, prop) {
-        return Reflect.get(getApp(), prop);
-    }
-});
-
-const db = new Proxy({} as Firestore, {
-    get(_, prop) {
-        return Reflect.get(getDb(), prop);
-    }
-});
-
-const auth = new Proxy({} as Auth, {
-    get(_, prop) {
-        return Reflect.get(getAuthInstance(), prop);
-    }
-});
 
 const googleProvider = new GoogleAuthProvider();
 
